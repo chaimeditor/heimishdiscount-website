@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Terms & Conditions — Heimish Discount</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { theme: { extend: { colors: { bg: '#0A0A0A', surface: '#1A1A1A', primary: '#22C55E', muted: '#6B7280' } } } };
+</script>
+</head>
+<body class="bg-bg text-white min-h-screen">
+  <header class="px-6 py-5 flex items-center justify-between max-w-4xl mx-auto">
+    <a href="/" class="text-2xl font-bold text-primary">Heimish Discount</a>
+    <nav class="flex gap-6 text-sm text-muted">
+      <a href="/" class="hover:text-white">Home</a>
+      <a href="/privacy-policy" class="hover:text-white">Privacy</a>
+    </nav>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-6 py-12">
+    <h1 class="text-4xl font-bold mb-2">Terms & Conditions</h1>
+    <p class="text-muted mb-8">Last updated: <span id="date"></span></p>
+
+    <section class="space-y-6 text-gray-300 leading-relaxed">
+      <p>Welcome to Heimish Discount. By using our app or website, you agree to these Terms & Conditions. Please read them carefully.</p>
+
+      <div>
+        <h2 class="text-2xl font-bold text-white mt-8 mb-3">1. The service</h2>
+        <p>Heimish Discount is a technology platform that connects riders with independent drivers. We do not provide transportation services ourselves; drivers are independent contractors.</p>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-bold text-white mt-8 mb-3">2. Eligibility</h2>
+        <p>You must be at least 18 years old to create an account. Drivers must additionally hold a valid driver's license, vehicle registration, and pass our verification process.</p>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-bold text-white mt-8 mb-3">3. Account responsibility</h2>
+        <p>You are responsible for keeping your account credentials secure and for all activity that occurs under your account.</p>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-bold text-white mt-8 mb-3">4. Fares and payment</h2>
+        <p>Fares are calculated based on distance, time, and applicable promotions. Payment is processed automatically at the end of each ride. Promo codes are subject to terms set by Heimish Discount and may be revoked at any time.</p>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-bold text-white mt-8 mb-3">5. Conduct</h2>
+        <p>You agree to treat drivers and riders with respect. Harassment, discrimination, or unsafe behavior will result in account termination. Drivers must follow all traffic laws and operate a roadworthy vehicle.</p>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-bold text-white mt-8 mb-3">6. Cancellations</h2>
+        <p>Riders may cancel a ride before pickup. Late cancellations or no-shows may incur a fee.</p>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-bold text-white mt-8 mb-3">7. Limitation of liability</h2>
+        <p>Heimish Discount is not liable for the acts or omissions of drivers or riders. The service is provided "as is" without warranties of any kind. To the maximum extent permitted by law, our liability is limited to the fare paid for the affected ride.</p>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-bold text-white mt-8 mb-3">8. Termination</h2>
+        <p>We may suspend or terminate your account at any time for violations of these terms or for any other reason at our discretion.</p>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-bold text-white mt-8 mb-3">9. Changes</h2>
+        <p>We may update these terms from time to time. Continued use of the service after changes constitutes acceptance.</p>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-bold text-white mt-8 mb-3">10. Contact</h2>
+        <p>Questions? Email <a href="mailto:support@heimishdiscount.com" class="text-primary hover:underline">support@heimishdiscount.com</a>.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="px-6 py-8 text-center text-sm text-muted">
+    © <span id="year"></span> Heimish Discount.
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    document.getElementById('date').textContent = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  </script>
+</body>
+</html>

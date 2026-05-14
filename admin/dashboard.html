@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin Dashboard — Heimish Discount</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { theme: { extend: { colors: { bg: '#0A0A0A', surface: '#1A1A1A', primary: '#22C55E', 'primary-dark': '#16A34A', muted: '#6B7280', danger: '#EF4444', warning: '#F59E0B' } } } };
+</script>
+</head>
+<body class="bg-bg text-white min-h-screen flex">
+  <aside class="w-64 bg-surface min-h-screen p-6 hidden md:block">
+    <a href="../index.html" class="text-xl font-bold text-primary block mb-8">Heimish Discount</a>
+    <nav class="space-y-1 text-sm">
+      <a href="#" data-tab="overview" class="tab-link block px-3 py-2 rounded-lg bg-primary/10 text-primary">Overview</a>
+      <a href="#" data-tab="rides" class="tab-link block px-3 py-2 rounded-lg text-muted hover:bg-bg hover:text-white">Rides</a>
+      <a href="#" data-tab="riders" class="tab-link block px-3 py-2 rounded-lg text-muted hover:bg-bg hover:text-white">Riders</a>
+      <a href="#" data-tab="drivers" class="tab-link block px-3 py-2 rounded-lg text-muted hover:bg-bg hover:text-white">Drivers</a>
+      <a href="#" data-tab="earnings" class="tab-link block px-3 py-2 rounded-lg text-muted hover:bg-bg hover:text-white">Earnings</a>
+      <a href="#" data-tab="verification" class="tab-link block px-3 py-2 rounded-lg text-muted hover:bg-bg hover:text-white">Verification</a>
+      <a href="#" data-tab="promos" class="tab-link block px-3 py-2 rounded-lg text-muted hover:bg-bg hover:text-white">Promo Codes</a>
+    </nav>
+    <div class="mt-8 pt-6 border-t border-gray-800">
+      <a href="login.html" class="text-sm text-muted hover:text-danger">Sign out</a>
+    </div>
+  </aside>
+
+  <main class="flex-1 p-6 md:p-10 overflow-x-auto">
+    <header class="flex items-center justify-between mb-8">
+      <div>
+        <h1 id="pageTitle" class="text-3xl font-bold">Overview</h1>
+        <p class="text-muted text-sm mt-1">Welcome back, admin.</p>
+      </div>
+      <div class="text-right text-sm text-muted">
+        <p id="today"></p>
+      </div>
+    </header>
+
+    <!-- Overview -->
+    <section data-panel="overview" class="panel">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div class="bg-surface rounded-xl p-5">
+          <p class="text-xs text-muted uppercase">Rides Today</p>
+          <p class="text-3xl font-bold mt-2">127</p>
+          <p class="text-xs text-primary mt-1">+12% vs yesterday</p>
+        </div>
+        <div class="bg-surface rounded-xl p-5">
+          <p class="text-xs text-muted uppercase">Active Drivers</p>
+          <p class="text-3xl font-bold mt-2">34</p>
+          <p class="text-xs text-primary mt-1">8 currently online</p>
+        </div>
+        <div class="bg-surface rounded-xl p-5">
+          <p class="text-xs text-muted uppercase">Revenue Today</p>
+          <p class="text-3xl font-bold mt-2">$1,842</p>
+          <p class="text-xs text-primary mt-1">+8% vs yesterday</p>
+        </div>
+        <div class="bg-surface rounded-xl p-5">
+          <p class="text-xs text-muted uppercase">Pending Verifications</p>
+          <p class="text-3xl font-bold mt-2 text-warning">5</p>
+          <p class="text-xs text-muted mt-1">Awaiting review</p>
+        </div>
+      </div>
+
+      <div class="bg-surface rounded-xl p-6">
+        <h2 class="text-lg font-bold mb-4">Recent Activity</h2>
+        <ul class="space-y-3 text-sm">
+          <li class="flex justify-between border-b border-gray-800 pb-2"><span>Ride #2847 completed</span><span class="text-muted">2 min ago</span></li>
+          <li class="flex justify-between border-b border-gray-800 pb-2"><span>Driver Yossi Klein went online</span><span class="text-muted">8 min ago</span></li>
+          <li class="flex justify-between border-b border-gray-800 pb-2"><span>New rider registered: Sarah G.</span><span class="text-muted">14 min ago</span></li>
+          <li class="flex justify-between"><span>Verification submitted by Mendel B.</span><span class="text-muted">28 min ago</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Rides -->
+    <section data-panel="rides" class="panel hidden">
+      <div class="bg-surface rounded-xl overflow-hidden">
+        <table class="w-full text-sm">
+          <thead class="bg-bg text-muted text-xs uppercase">
+            <tr><th class="px-4 py-3 text-left">Ride ID</th><th class="px-4 py-3 text-left">Rider</th><th class="px-4 py-3 text-left">Driver</th><th class="px-4 py-3 text-left">Route</th><th class="px-4 py-3 text-left">Fare</th><th class="px-4 py-3 text-left">Status</th></tr>
+          </thead>
+          <tbody>
+            <tr class="border-t border-gray-800"><td class="px-4 py-3">#2847</td><td class="px-4 py-3">Sarah G.</td><td class="px-4 py-3">Yossi K.</td><td class="px-4 py-3">Williamsburg → Boro Park</td><td class="px-4 py-3">$18.50</td><td class="px-4 py-3"><span class="text-primary">completed</span></td></tr>
+            <tr class="border-t border-gray-800"><td class="px-4 py-3">#2846</td><td class="px-4 py-3">David L.</td><td class="px-4 py-3">Mendel B.</td><td class="px-4 py-3">Crown Heights → Flatbush</td><td class="px-4 py-3">$22.00</td><td class="px-4 py-3"><span class="text-warning">in_progress</span></td></tr>
+            <tr class="border-t border-gray-800"><td class="px-4 py-3">#2845</td><td class="px-4 py-3">Rivka S.</td><td class="px-4 py-3">Avrohom F.</td><td class="px-4 py-3">Monsey → Lakewood</td><td class="px-4 py-3">$65.00</td><td class="px-4 py-3"><span class="text-primary">completed</span></td></tr>
+            <tr class="border-t border-gray-800"><td class="px-4 py-3">#2844</td><td class="px-4 py-3">Chaim W.</td><td class="px-4 py-3">—</td><td class="px-4 py-3">Boro Park → JFK</td><td class="px-4 py-3">$48.00</td><td class="px-4 py-3"><span class="text-muted">searching</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Riders -->
+    <section data-panel="riders" class="panel hidden">
+      <div class="bg-surface rounded-xl overflow-hidden">
+        <table class="w-full text-sm">
+          <thead class="bg-bg text-muted text-xs uppercase">
+            <tr><th class="px-4 py-3 text-left">Name</th><th class="px-4 py-3 text-left">Phone</th><th class="px-4 py-3 text-left">Total Rides</th><th class="px-4 py-3 text-left">Rating</th><th class="px-4 py-3 text-left">Joined</th></tr>
+          </thead>
+          <tbody>
+            <tr class="border-t border-gray-800"><td class="px-4 py-3">Sarah Goldberg</td><td class="px-4 py-3">(718) 555-0142</td><td class="px-4 py-3">47</td><td class="px-4 py-3">4.9 ★</td><td class="px-4 py-3">2025-08-12</td></tr>
+            <tr class="border-t border-gray-800"><td class="px-4 py-3">David Levy</td><td class="px-4 py-3">(347) 555-0198</td><td class="px-4 py-3">23</td><td class="px-4 py-3">4.7 ★</td><td class="px-4 py-3">2025-11-04</td></tr>
+            <tr class="border-t border-gray-800"><td class="px-4 py-3">Rivka Stern</td><td class="px-4 py-3">(845) 555-0167</td><td class="px-4 py-3">112</td><td class="px-4 py-3">5.0 ★</td><td class="px-4 py-3">2025-03-22</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Drivers -->
+    <section data-panel="drivers" class="panel hidden">
+      <div class="bg-surface rounded-xl overflow-hidden">
+        <table class="w-full text-sm">
+          <thead class="bg-bg text-muted text-xs uppercase">
+            <tr><th class="px-4 py-3 text-left">Name</th><th class="px-4 py-3 text-left">Vehicle</th><th class="px-4 py-3 text-left">Plate</th><th class="px-4 py-3 text-left">Rating</th><th class="px-4 py-3 text-left">Status</th><th class="px-4 py-3 text-left">Verified</th></tr>
+          </thead>
+          <tbody>
+            <tr class="border-t border-gray-800"><td class="px-4 py-3">Yossi Klein</td><td class="px-4 py-3">Toyota Camry</td><td class="px-4 py-3">HMD-1234</td><td class="px-4 py-3">4.9 ★</td><td class="px-4 py-3"><span class="text-primary">online</span></td><td class="px-4 py-3"><span class="text-primary">✓</span></td></tr>
+            <tr class="border-t border-gray-800"><td class="px-4 py-3">Mendel Berkowitz</td><td class="px-4 py-3">Honda Odyssey</td><td class="px-4 py-3">HMD-5678</td><td class="px-4 py-3">4.8 ★</td><td class="px-4 py-3"><span class="text-primary">online</span></td><td class="px-4 py-3"><span class="text-primary">✓</span></td></tr>
+            <tr class="border-t border-gray-800"><td class="px-4 py-3">Avrohom Friedman</td><td class="px-4 py-3">Sienna</td><td class="px-4 py-3">HMD-9012</td><td class="px-4 py-3">4.7 ★</td><td class="px-4 py-3"><span class="text-muted">offline</span></td><td class="px-4 py-3"><span class="text-primary">✓</span></td></tr>
+            <tr class="border-t border-gray-800"><td class="px-4 py-3">Shimon Katz</td><td class="px-4 py-3">Ford Transit</td><td class="px-4 py-3">HMD-3456</td><td class="px-4 py-3">—</td><td class="px-4 py-3"><span class="text-muted">offline</span></td><td class="px-4 py-3"><span class="text-warning">pending</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Earnings -->
+    <section data-panel="earnings" class="panel hidden">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div class="bg-surface rounded-xl p-5"><p class="text-xs text-muted uppercase">This Week</p><p class="text-3xl font-bold mt-2">$12,847</p></div>
+        <div class="bg-surface rounded-xl p-5"><p class="text-xs text-muted uppercase">This Month</p><p class="text-3xl font-bold mt-2">$48,392</p></div>
+        <div class="bg-surface rounded-xl p-5"><p class="text-xs text-muted uppercase">All Time</p><p class="text-3xl font-bold mt-2">$284,150</p></div>
+      </div>
+      <div class="bg-surface rounded-xl p-6">
+        <h2 class="text-lg font-bold mb-4">Top Earning Drivers</h2>
+        <ul class="space-y-3 text-sm">
+          <li class="flex justify-between border-b border-gray-800 pb-2"><span>Yossi Klein</span><span class="font-semibold">$3,240</span></li>
+          <li class="flex justify-between border-b border-gray-800 pb-2"><span>Mendel Berkowitz</span><span class="font-semibold">$2,890</span></li>
+          <li class="flex justify-between"><span>Avrohom Friedman</span><span class="font-semibold">$2,455</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Verification queue -->
+    <section data-panel="verification" class="panel hidden">
+      <div class="bg-surface rounded-xl p-6">
+        <h2 class="text-lg font-bold mb-4">Pending Driver Verifications</h2>
+        <div class="space-y-4">
+          <div class="border border-gray-800 rounded-lg p-4 flex items-center justify-between">
+            <div><p class="font-semibold">Shimon Katz</p><p class="text-sm text-muted">License + plate photo · submitted 28 min ago</p></div>
+            <div class="flex gap-2"><button class="bg-primary text-black text-sm px-4 py-2 rounded-lg font-semibold">Approve</button><button class="bg-danger text-white text-sm px-4 py-2 rounded-lg font-semibold">Reject</button></div>
+          </div>
+          <div class="border border-gray-800 rounded-lg p-4 flex items-center justify-between">
+            <div><p class="font-semibold">Yitzchok Rosen</p><p class="text-sm text-muted">License only · submitted 2h ago</p></div>
+            <div class="flex gap-2"><button class="bg-primary text-black text-sm px-4 py-2 rounded-lg font-semibold">Approve</button><button class="bg-danger text-white text-sm px-4 py-2 rounded-lg font-semibold">Reject</button></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Promo codes -->
+    <section data-panel="promos" class="panel hidden">
+      <div class="bg-surface rounded-xl overflow-hidden">
+        <table class="w-full text-sm">
+          <thead class="bg-bg text-muted text-xs uppercase">
+            <tr><th class="px-4 py-3 text-left">Code</th><th class="px-4 py-3 text-left">Discount</th><th class="px-4 py-3 text-left">Uses</th><th class="px-4 py-3 text-left">Expires</th><th class="px-4 py-3 text-left">Status</th></tr>
+          </thead>
+          <tbody>
+            <tr class="border-t border-gray-800"><td class="px-4 py-3 font-mono">WELCOME10</td><td class="px-4 py-3">10% off</td><td class="px-4 py-3">847</td><td class="px-4 py-3">2026-12-31</td><td class="px-4 py-3"><span class="text-primary">active</span></td></tr>
+            <tr class="border-t border-gray-800"><td class="px-4 py-3 font-mono">PURIM26</td><td class="px-4 py-3">$5 off</td><td class="px-4 py-3">203</td><td class="px-4 py-3">2026-03-15</td><td class="px-4 py-3"><span class="text-muted">expired</span></td></tr>
+            <tr class="border-t border-gray-800"><td class="px-4 py-3 font-mono">SHABBOS</td><td class="px-4 py-3">15% off</td><td class="px-4 py-3">1,204</td><td class="px-4 py-3">—</td><td class="px-4 py-3"><span class="text-primary">active</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    document.getElementById('today').textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+    const tabs = document.querySelectorAll('.tab-link');
+    const panels = document.querySelectorAll('.panel');
+    const title = document.getElementById('pageTitle');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', (e) => {
+        e.preventDefault();
+        const name = tab.dataset.tab;
+        tabs.forEach(t => {
+          t.classList.remove('bg-primary/10', 'text-primary');
+          t.classList.add('text-muted');
+        });
+        tab.classList.add('bg-primary/10', 'text-primary');
+        tab.classList.remove('text-muted');
+
+        panels.forEach(p => p.classList.add('hidden'));
+        document.querySelector(`[data-panel="${name}"]`).classList.remove('hidden');
+        title.textContent = tab.textContent;
+      });
+    });
+  </script>
+</body>
+</html>

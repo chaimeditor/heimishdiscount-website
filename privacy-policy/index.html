@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Privacy Policy — Heimish Discount</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { theme: { extend: { colors: { bg: '#0A0A0A', surface: '#1A1A1A', primary: '#22C55E', muted: '#6B7280' } } } };
+</script>
+</head>
+<body class="bg-bg text-white min-h-screen">
+  <header class="px-6 py-5 flex items-center justify-between max-w-4xl mx-auto">
+    <a href="/" class="text-2xl font-bold text-primary">Heimish Discount</a>
+    <nav class="flex gap-6 text-sm text-muted">
+      <a href="/" class="hover:text-white">Home</a>
+      <a href="/terms-and-conditions" class="hover:text-white">Terms</a>
+    </nav>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-6 py-12 prose prose-invert">
+    <h1 class="text-4xl font-bold mb-2">Privacy Policy</h1>
+    <p class="text-muted mb-8">Last updated: <span id="date"></span></p>
+
+    <section class="space-y-6 text-gray-300 leading-relaxed">
+      <p>Heimish Discount ("we", "us", "our") respects your privacy. This Privacy Policy describes how we collect, use, and share information when you use our mobile application and website.</p>
+
+      <div>
+        <h2 class="text-2xl font-bold text-white mt-8 mb-3">1. Information we collect</h2>
+        <ul class="list-disc pl-6 space-y-2">
+          <li><strong>Account information:</strong> name, phone number, email, profile photo.</li>
+          <li><strong>Location data:</strong> precise GPS location during active rides to match riders with drivers and provide navigation.</li>
+          <li><strong>Ride information:</strong> pickup/dropoff addresses, fare, route, ride history.</li>
+          <li><strong>Payment information:</strong> processed by third-party providers; we do not store full card numbers.</li>
+          <li><strong>Driver verification:</strong> driver license, vehicle registration, license plate photo.</li>
+          <li><strong>Device & usage data:</strong> device type, OS, app version, crash logs.</li>
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-bold text-white mt-8 mb-3">2. How we use information</h2>
+        <ul class="list-disc pl-6 space-y-2">
+          <li>To provide and operate the ride-sharing service.</li>
+          <li>To match riders with nearby drivers.</li>
+          <li>To process payments and calculate fares.</li>
+          <li>To verify driver eligibility.</li>
+          <li>To improve safety, prevent fraud, and comply with legal obligations.</li>
+          <li>To send service-related notifications.</li>
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-bold text-white mt-8 mb-3">3. Sharing of information</h2>
+        <p>We share information between the rider and matched driver to complete a trip (name, photo, rating, location). We do not sell your personal information. We may share data with payment processors, mapping providers, and as required by law.</p>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-bold text-white mt-8 mb-3">4. Data retention</h2>
+        <p>We retain ride and account data for as long as your account is active and as required for legal, accounting, and safety purposes.</p>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-bold text-white mt-8 mb-3">5. Your rights</h2>
+        <p>You may request access, correction, or deletion of your personal data by contacting us. You may also disable location permissions in your device settings — note that this will prevent the app from functioning.</p>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-bold text-white mt-8 mb-3">6. Children</h2>
+        <p>Heimish Discount is not intended for children under 13. We do not knowingly collect data from children.</p>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-bold text-white mt-8 mb-3">7. Changes to this policy</h2>
+        <p>We may update this Privacy Policy from time to time. Material changes will be communicated through the app or website.</p>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-bold text-white mt-8 mb-3">8. Contact</h2>
+        <p>For questions about this policy, email <a href="mailto:privacy@heimishdiscount.com" class="text-primary hover:underline">privacy@heimishdiscount.com</a>.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="px-6 py-8 text-center text-sm text-muted">
+    © <span id="year"></span> Heimish Discount.
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    document.getElementById('date').textContent = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  </script>
+</body>
+</html>
