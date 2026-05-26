@@ -7,24 +7,30 @@
 <link rel="icon" type="image/png" href="/favicon.png" />
 <link rel="apple-touch-icon" href="/favicon.png" />
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script>
-  tailwind.config = { theme: { extend: { colors: { bg: '#0A0A0A', surface: '#1A1A1A', primary: '#22C55E', 'primary-dark': '#16A34A', muted: '#6B7280', danger: '#EF4444', warning: '#F59E0B' } } } };
+  tailwind.config = { theme: { extend: { colors: { primary: '#22C55E', 'primary-dark': '#16A34A', muted: '#6B7280', danger: '#EF4444', warning: '#F59E0B' } } } };
 </script>
+<style>
+  html { font-size: 150%; }
+</style>
 </head>
-<body class="bg-bg text-white min-h-screen flex">
-  <aside class="w-64 bg-surface min-h-screen p-6 hidden md:block">
+<body class="bg-gray-50 text-gray-900 min-h-screen flex">
+  <aside class="w-64 bg-white min-h-screen p-6 hidden md:block border-r border-gray-200">
     <a href="../index.html" class="text-xl font-bold text-primary block mb-8">Heimish Discount</a>
     <nav class="space-y-1 text-sm">
-      <a href="#" data-tab="overview" class="tab-link block px-3 py-2 rounded-lg bg-primary/10 text-primary">Overview</a>
-      <a href="#" data-tab="rides" class="tab-link block px-3 py-2 rounded-lg text-muted hover:bg-bg hover:text-white">Rides</a>
-      <a href="#" data-tab="riders" class="tab-link block px-3 py-2 rounded-lg text-muted hover:bg-bg hover:text-white">Riders</a>
-      <a href="#" data-tab="drivers" class="tab-link block px-3 py-2 rounded-lg text-muted hover:bg-bg hover:text-white">Drivers</a>
-      <a href="#" data-tab="earnings" class="tab-link block px-3 py-2 rounded-lg text-muted hover:bg-bg hover:text-white">Earnings</a>
-      <a href="#" data-tab="verification" class="tab-link block px-3 py-2 rounded-lg text-muted hover:bg-bg hover:text-white">Verification</a>
-      <a href="#" data-tab="promos" class="tab-link block px-3 py-2 rounded-lg text-muted hover:bg-bg hover:text-white">Promo Codes</a>
+      <a href="#" data-tab="overview" class="tab-link block px-3 py-2 rounded-lg bg-primary/10 text-primary font-medium">Overview</a>
+      <a href="#" data-tab="finance" class="tab-link block px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900">Income &amp; Expenses</a>
+      <a href="#" data-tab="rides" class="tab-link block px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900">Rides</a>
+      <a href="#" data-tab="riders" class="tab-link block px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900">Riders</a>
+      <a href="#" data-tab="drivers" class="tab-link block px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900">Drivers</a>
+      <a href="#" data-tab="earnings" class="tab-link block px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900">Earnings</a>
+      <a href="#" data-tab="verification" class="tab-link block px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900">Verification</a>
+      <a href="#" data-tab="promos" class="tab-link block px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900">Promo Codes</a>
+      <a href="playground.html" class="block px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900">Playground</a>
     </nav>
-    <div class="mt-8 pt-6 border-t border-gray-800">
-      <a href="login.html" class="text-sm text-muted hover:text-danger">Sign out</a>
+    <div class="mt-8 pt-6 border-t border-gray-200">
+      <a href="login.html" class="text-sm text-gray-500 hover:text-danger">Sign out</a>
     </div>
   </aside>
 
@@ -32,9 +38,9 @@
     <header class="flex items-center justify-between mb-8">
       <div>
         <h1 id="pageTitle" class="text-3xl font-bold">Overview</h1>
-        <p class="text-muted text-sm mt-1">Welcome back, admin.</p>
+        <p class="text-gray-500 text-sm mt-1">Welcome back, admin.</p>
       </div>
-      <div class="text-right text-sm text-muted">
+      <div class="text-right text-sm text-gray-500">
         <p id="today"></p>
       </div>
     </header>
@@ -42,51 +48,166 @@
     <!-- Overview -->
     <section data-panel="overview" class="panel">
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        <div class="bg-surface rounded-xl p-5">
-          <p class="text-xs text-muted uppercase">Rides Today</p>
+        <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
+          <p class="text-xs text-gray-500 uppercase tracking-wide">Rides Today</p>
           <p class="text-3xl font-bold mt-2">127</p>
           <p class="text-xs text-primary mt-1">+12% vs yesterday</p>
         </div>
-        <div class="bg-surface rounded-xl p-5">
-          <p class="text-xs text-muted uppercase">Active Drivers</p>
+        <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
+          <p class="text-xs text-gray-500 uppercase tracking-wide">Active Drivers</p>
           <p class="text-3xl font-bold mt-2">34</p>
           <p class="text-xs text-primary mt-1">8 currently online</p>
         </div>
-        <div class="bg-surface rounded-xl p-5">
-          <p class="text-xs text-muted uppercase">Revenue Today</p>
+        <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
+          <p class="text-xs text-gray-500 uppercase tracking-wide">Revenue Today</p>
           <p class="text-3xl font-bold mt-2">$1,842</p>
           <p class="text-xs text-primary mt-1">+8% vs yesterday</p>
         </div>
-        <div class="bg-surface rounded-xl p-5">
-          <p class="text-xs text-muted uppercase">Pending Verifications</p>
+        <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
+          <p class="text-xs text-gray-500 uppercase tracking-wide">Pending Verifications</p>
           <p class="text-3xl font-bold mt-2 text-warning">5</p>
-          <p class="text-xs text-muted mt-1">Awaiting review</p>
+          <p class="text-xs text-gray-500 mt-1">Awaiting review</p>
         </div>
       </div>
 
-      <div class="bg-surface rounded-xl p-6">
+      <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
         <h2 class="text-lg font-bold mb-4">Recent Activity</h2>
         <ul class="space-y-3 text-sm">
-          <li class="flex justify-between border-b border-gray-800 pb-2"><span>Ride #2847 completed</span><span class="text-muted">2 min ago</span></li>
-          <li class="flex justify-between border-b border-gray-800 pb-2"><span>Driver Yossi Klein went online</span><span class="text-muted">8 min ago</span></li>
-          <li class="flex justify-between border-b border-gray-800 pb-2"><span>New rider registered: Sarah G.</span><span class="text-muted">14 min ago</span></li>
-          <li class="flex justify-between"><span>Verification submitted by Mendel B.</span><span class="text-muted">28 min ago</span></li>
+          <li class="flex justify-between border-b border-gray-100 pb-2"><span>Ride #2847 completed</span><span class="text-gray-500">2 min ago</span></li>
+          <li class="flex justify-between border-b border-gray-100 pb-2"><span>Driver Yossi Klein went online</span><span class="text-gray-500">8 min ago</span></li>
+          <li class="flex justify-between border-b border-gray-100 pb-2"><span>New rider registered: Sarah G.</span><span class="text-gray-500">14 min ago</span></li>
+          <li class="flex justify-between"><span>Verification submitted by Mendel B.</span><span class="text-gray-500">28 min ago</span></li>
         </ul>
+      </div>
+    </section>
+
+    <!-- Income & Expenses -->
+    <section data-panel="finance" class="panel hidden">
+      <!-- Controls row: time window, date range, live indicator -->
+      <div class="bg-white rounded-xl p-4 border border-gray-200 shadow-sm mb-6 flex flex-wrap items-center gap-3">
+        <div class="flex flex-wrap gap-1" id="finRangeBtns">
+          <button data-range="today" class="fin-range px-3 py-1.5 rounded-lg text-sm bg-primary text-white font-medium">Today</button>
+          <button data-range="week" class="fin-range px-3 py-1.5 rounded-lg text-sm text-gray-600 hover:bg-gray-100">Week</button>
+          <button data-range="month" class="fin-range px-3 py-1.5 rounded-lg text-sm text-gray-600 hover:bg-gray-100">Month</button>
+          <button data-range="ytd" class="fin-range px-3 py-1.5 rounded-lg text-sm text-gray-600 hover:bg-gray-100">YTD</button>
+          <button data-range="all" class="fin-range px-3 py-1.5 rounded-lg text-sm text-gray-600 hover:bg-gray-100">All time</button>
+          <button data-range="custom" class="fin-range px-3 py-1.5 rounded-lg text-sm text-gray-600 hover:bg-gray-100">Custom</button>
+        </div>
+        <div id="finCustomRange" class="hidden flex items-center gap-2 ml-2">
+          <input type="date" id="finFromDate" class="border border-gray-200 rounded-lg px-2 py-1 text-sm" />
+          <span class="text-gray-400 text-sm">→</span>
+          <input type="date" id="finToDate" class="border border-gray-200 rounded-lg px-2 py-1 text-sm" />
+          <button id="finApplyCustom" class="bg-gray-900 text-white text-sm px-3 py-1.5 rounded-lg font-semibold">Apply</button>
+        </div>
+        <div class="ml-auto flex items-center gap-3 text-sm">
+          <span class="flex items-center gap-1.5 text-gray-500"><span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span><span id="finLiveLabel">Live · refreshing every 30s</span></span>
+          <button id="finRefreshBtn" class="text-gray-600 hover:text-gray-900 border border-gray-200 rounded-lg px-3 py-1.5 font-medium">Refresh</button>
+        </div>
+      </div>
+
+      <!-- KPI cards -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
+          <p class="text-xs text-gray-500 uppercase tracking-wide">Income</p>
+          <p id="kpiIncome" class="text-3xl font-bold mt-2 text-primary">$0</p>
+          <p id="kpiIncomeSub" class="text-xs text-gray-500 mt-1">—</p>
+        </div>
+        <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
+          <p class="text-xs text-gray-500 uppercase tracking-wide">Expenses</p>
+          <p id="kpiExpenses" class="text-3xl font-bold mt-2 text-danger">$0</p>
+          <p id="kpiExpensesSub" class="text-xs text-gray-500 mt-1">—</p>
+        </div>
+        <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
+          <p class="text-xs text-gray-500 uppercase tracking-wide">Net Profit</p>
+          <p id="kpiNet" class="text-3xl font-bold mt-2">$0</p>
+          <p id="kpiNetSub" class="text-xs text-gray-500 mt-1">—</p>
+        </div>
+        <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
+          <p class="text-xs text-gray-500 uppercase tracking-wide">Margin</p>
+          <p id="kpiMargin" class="text-3xl font-bold mt-2">0%</p>
+          <p id="kpiMarginSub" class="text-xs text-gray-500 mt-1">net / income</p>
+        </div>
+      </div>
+
+      <!-- Charts row -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
+        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm lg:col-span-2">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-lg font-bold">Income vs Expenses</h2>
+            <div class="text-xs text-gray-500" id="finChartScale">—</div>
+          </div>
+          <div class="relative" style="height:280px"><canvas id="finTrendChart"></canvas></div>
+        </div>
+        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+          <h2 class="text-lg font-bold mb-4">Expense Breakdown</h2>
+          <div class="relative" style="height:280px"><canvas id="finBreakdownChart"></canvas></div>
+        </div>
+      </div>
+
+      <!-- Live transaction feed + Expenses table -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-lg font-bold">Live Transactions</h2>
+            <span class="text-xs text-gray-500" id="finFeedCount">0 items</span>
+          </div>
+          <ul id="finFeed" class="space-y-2 text-sm max-h-96 overflow-y-auto"></ul>
+        </div>
+        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-lg font-bold">Expenses</h2>
+            <span class="text-xs text-gray-500">Click any row to edit · last row to add</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead class="bg-gray-50 text-gray-500 text-xs uppercase tracking-wide">
+                <tr>
+                  <th class="px-3 py-2 text-left">Date</th>
+                  <th class="px-3 py-2 text-left">Category</th>
+                  <th class="px-3 py-2 text-left">Description</th>
+                  <th class="px-3 py-2 text-left">Source</th>
+                  <th class="px-3 py-2 text-right">Amount</th>
+                  <th class="px-3 py-2"></th>
+                </tr>
+              </thead>
+              <tbody id="finExpensesBody"></tbody>
+              <tfoot>
+                <tr class="border-t-2 border-gray-200 bg-gray-50/50">
+                  <td class="px-3 py-2"><input type="date" id="newExpDate" class="w-full bg-transparent text-sm focus:outline-none" /></td>
+                  <td class="px-3 py-2">
+                    <select id="newExpCategory" class="w-full bg-transparent text-sm focus:outline-none">
+                      <option value="Payouts">Payouts</option>
+                      <option value="Stripe Fees">Stripe Fees</option>
+                      <option value="Infrastructure">Infrastructure</option>
+                      <option value="Marketing" selected>Marketing</option>
+                      <option value="Payroll">Payroll</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </td>
+                  <td class="px-3 py-2"><input type="text" id="newExpDesc" placeholder="Description…" class="w-full bg-transparent text-sm focus:outline-none" /></td>
+                  <td class="px-3 py-2 text-gray-500 text-xs">manual</td>
+                  <td class="px-3 py-2 text-right"><input type="number" step="0.01" id="newExpAmount" placeholder="0.00" class="w-24 text-right bg-transparent text-sm focus:outline-none" /></td>
+                  <td class="px-3 py-2 text-right"><button id="newExpAdd" class="text-primary hover:text-primary-dark font-semibold text-sm">+ Add</button></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
       </div>
     </section>
 
     <!-- Rides -->
     <section data-panel="rides" class="panel hidden">
-      <div class="bg-surface rounded-xl overflow-hidden">
+      <div class="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm">
         <table class="w-full text-sm">
-          <thead class="bg-bg text-muted text-xs uppercase">
+          <thead class="bg-gray-50 text-gray-500 text-xs uppercase tracking-wide">
             <tr><th class="px-4 py-3 text-left">Ride ID</th><th class="px-4 py-3 text-left">Rider</th><th class="px-4 py-3 text-left">Driver</th><th class="px-4 py-3 text-left">Route</th><th class="px-4 py-3 text-left">Fare</th><th class="px-4 py-3 text-left">Status</th></tr>
           </thead>
           <tbody>
-            <tr class="border-t border-gray-800"><td class="px-4 py-3">#2847</td><td class="px-4 py-3">Sarah G.</td><td class="px-4 py-3">Yossi K.</td><td class="px-4 py-3">Williamsburg → Boro Park</td><td class="px-4 py-3">$18.50</td><td class="px-4 py-3"><span class="text-primary">completed</span></td></tr>
-            <tr class="border-t border-gray-800"><td class="px-4 py-3">#2846</td><td class="px-4 py-3">David L.</td><td class="px-4 py-3">Mendel B.</td><td class="px-4 py-3">Crown Heights → Flatbush</td><td class="px-4 py-3">$22.00</td><td class="px-4 py-3"><span class="text-warning">in_progress</span></td></tr>
-            <tr class="border-t border-gray-800"><td class="px-4 py-3">#2845</td><td class="px-4 py-3">Rivka S.</td><td class="px-4 py-3">Avrohom F.</td><td class="px-4 py-3">Monsey → Lakewood</td><td class="px-4 py-3">$65.00</td><td class="px-4 py-3"><span class="text-primary">completed</span></td></tr>
-            <tr class="border-t border-gray-800"><td class="px-4 py-3">#2844</td><td class="px-4 py-3">Chaim W.</td><td class="px-4 py-3">—</td><td class="px-4 py-3">Boro Park → JFK</td><td class="px-4 py-3">$48.00</td><td class="px-4 py-3"><span class="text-muted">searching</span></td></tr>
+            <tr class="border-t border-gray-100"><td class="px-4 py-3">#2847</td><td class="px-4 py-3">Sarah G.</td><td class="px-4 py-3">Yossi K.</td><td class="px-4 py-3">Williamsburg → Boro Park</td><td class="px-4 py-3">$18.50</td><td class="px-4 py-3"><span class="text-primary">completed</span></td></tr>
+            <tr class="border-t border-gray-100"><td class="px-4 py-3">#2846</td><td class="px-4 py-3">David L.</td><td class="px-4 py-3">Mendel B.</td><td class="px-4 py-3">Crown Heights → Flatbush</td><td class="px-4 py-3">$22.00</td><td class="px-4 py-3"><span class="text-warning">in_progress</span></td></tr>
+            <tr class="border-t border-gray-100"><td class="px-4 py-3">#2845</td><td class="px-4 py-3">Rivka S.</td><td class="px-4 py-3">Avrohom F.</td><td class="px-4 py-3">Monsey → Lakewood</td><td class="px-4 py-3">$65.00</td><td class="px-4 py-3"><span class="text-primary">completed</span></td></tr>
+            <tr class="border-t border-gray-100"><td class="px-4 py-3">#2844</td><td class="px-4 py-3">Chaim W.</td><td class="px-4 py-3">—</td><td class="px-4 py-3">Boro Park → JFK</td><td class="px-4 py-3">$48.00</td><td class="px-4 py-3"><span class="text-gray-500">searching</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -94,15 +215,15 @@
 
     <!-- Riders -->
     <section data-panel="riders" class="panel hidden">
-      <div class="bg-surface rounded-xl overflow-hidden">
+      <div class="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm">
         <table class="w-full text-sm">
-          <thead class="bg-bg text-muted text-xs uppercase">
+          <thead class="bg-gray-50 text-gray-500 text-xs uppercase tracking-wide">
             <tr><th class="px-4 py-3 text-left">Name</th><th class="px-4 py-3 text-left">Phone</th><th class="px-4 py-3 text-left">Total Rides</th><th class="px-4 py-3 text-left">Rating</th><th class="px-4 py-3 text-left">Joined</th></tr>
           </thead>
           <tbody>
-            <tr class="border-t border-gray-800"><td class="px-4 py-3">Sarah Goldberg</td><td class="px-4 py-3">(718) 555-0142</td><td class="px-4 py-3">47</td><td class="px-4 py-3">4.9 ★</td><td class="px-4 py-3">2025-08-12</td></tr>
-            <tr class="border-t border-gray-800"><td class="px-4 py-3">David Levy</td><td class="px-4 py-3">(347) 555-0198</td><td class="px-4 py-3">23</td><td class="px-4 py-3">4.7 ★</td><td class="px-4 py-3">2025-11-04</td></tr>
-            <tr class="border-t border-gray-800"><td class="px-4 py-3">Rivka Stern</td><td class="px-4 py-3">(845) 555-0167</td><td class="px-4 py-3">112</td><td class="px-4 py-3">5.0 ★</td><td class="px-4 py-3">2025-03-22</td></tr>
+            <tr class="border-t border-gray-100"><td class="px-4 py-3">Sarah Goldberg</td><td class="px-4 py-3">(718) 555-0142</td><td class="px-4 py-3">47</td><td class="px-4 py-3">4.9 ★</td><td class="px-4 py-3">2025-08-12</td></tr>
+            <tr class="border-t border-gray-100"><td class="px-4 py-3">David Levy</td><td class="px-4 py-3">(347) 555-0198</td><td class="px-4 py-3">23</td><td class="px-4 py-3">4.7 ★</td><td class="px-4 py-3">2025-11-04</td></tr>
+            <tr class="border-t border-gray-100"><td class="px-4 py-3">Rivka Stern</td><td class="px-4 py-3">(845) 555-0167</td><td class="px-4 py-3">112</td><td class="px-4 py-3">5.0 ★</td><td class="px-4 py-3">2025-03-22</td></tr>
           </tbody>
         </table>
       </div>
@@ -110,16 +231,16 @@
 
     <!-- Drivers -->
     <section data-panel="drivers" class="panel hidden">
-      <div class="bg-surface rounded-xl overflow-hidden">
+      <div class="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm">
         <table class="w-full text-sm">
-          <thead class="bg-bg text-muted text-xs uppercase">
+          <thead class="bg-gray-50 text-gray-500 text-xs uppercase tracking-wide">
             <tr><th class="px-4 py-3 text-left">Name</th><th class="px-4 py-3 text-left">Vehicle</th><th class="px-4 py-3 text-left">Plate</th><th class="px-4 py-3 text-left">Rating</th><th class="px-4 py-3 text-left">Status</th><th class="px-4 py-3 text-left">Verified</th></tr>
           </thead>
           <tbody>
-            <tr class="border-t border-gray-800"><td class="px-4 py-3">Yossi Klein</td><td class="px-4 py-3">Toyota Camry</td><td class="px-4 py-3">HMD-1234</td><td class="px-4 py-3">4.9 ★</td><td class="px-4 py-3"><span class="text-primary">online</span></td><td class="px-4 py-3"><span class="text-primary">✓</span></td></tr>
-            <tr class="border-t border-gray-800"><td class="px-4 py-3">Mendel Berkowitz</td><td class="px-4 py-3">Honda Odyssey</td><td class="px-4 py-3">HMD-5678</td><td class="px-4 py-3">4.8 ★</td><td class="px-4 py-3"><span class="text-primary">online</span></td><td class="px-4 py-3"><span class="text-primary">✓</span></td></tr>
-            <tr class="border-t border-gray-800"><td class="px-4 py-3">Avrohom Friedman</td><td class="px-4 py-3">Sienna</td><td class="px-4 py-3">HMD-9012</td><td class="px-4 py-3">4.7 ★</td><td class="px-4 py-3"><span class="text-muted">offline</span></td><td class="px-4 py-3"><span class="text-primary">✓</span></td></tr>
-            <tr class="border-t border-gray-800"><td class="px-4 py-3">Shimon Katz</td><td class="px-4 py-3">Ford Transit</td><td class="px-4 py-3">HMD-3456</td><td class="px-4 py-3">—</td><td class="px-4 py-3"><span class="text-muted">offline</span></td><td class="px-4 py-3"><span class="text-warning">pending</span></td></tr>
+            <tr class="border-t border-gray-100"><td class="px-4 py-3">Yossi Klein</td><td class="px-4 py-3">Toyota Camry</td><td class="px-4 py-3">HMD-1234</td><td class="px-4 py-3">4.9 ★</td><td class="px-4 py-3"><span class="text-primary">online</span></td><td class="px-4 py-3"><span class="text-primary">✓</span></td></tr>
+            <tr class="border-t border-gray-100"><td class="px-4 py-3">Mendel Berkowitz</td><td class="px-4 py-3">Honda Odyssey</td><td class="px-4 py-3">HMD-5678</td><td class="px-4 py-3">4.8 ★</td><td class="px-4 py-3"><span class="text-primary">online</span></td><td class="px-4 py-3"><span class="text-primary">✓</span></td></tr>
+            <tr class="border-t border-gray-100"><td class="px-4 py-3">Avrohom Friedman</td><td class="px-4 py-3">Sienna</td><td class="px-4 py-3">HMD-9012</td><td class="px-4 py-3">4.7 ★</td><td class="px-4 py-3"><span class="text-gray-500">offline</span></td><td class="px-4 py-3"><span class="text-primary">✓</span></td></tr>
+            <tr class="border-t border-gray-100"><td class="px-4 py-3">Shimon Katz</td><td class="px-4 py-3">Ford Transit</td><td class="px-4 py-3">HMD-3456</td><td class="px-4 py-3">—</td><td class="px-4 py-3"><span class="text-gray-500">offline</span></td><td class="px-4 py-3"><span class="text-warning">pending</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -128,15 +249,15 @@
     <!-- Earnings -->
     <section data-panel="earnings" class="panel hidden">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div class="bg-surface rounded-xl p-5"><p class="text-xs text-muted uppercase">This Week</p><p class="text-3xl font-bold mt-2">$12,847</p></div>
-        <div class="bg-surface rounded-xl p-5"><p class="text-xs text-muted uppercase">This Month</p><p class="text-3xl font-bold mt-2">$48,392</p></div>
-        <div class="bg-surface rounded-xl p-5"><p class="text-xs text-muted uppercase">All Time</p><p class="text-3xl font-bold mt-2">$284,150</p></div>
+        <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm"><p class="text-xs text-gray-500 uppercase tracking-wide">This Week</p><p class="text-3xl font-bold mt-2">$12,847</p></div>
+        <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm"><p class="text-xs text-gray-500 uppercase tracking-wide">This Month</p><p class="text-3xl font-bold mt-2">$48,392</p></div>
+        <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm"><p class="text-xs text-gray-500 uppercase tracking-wide">All Time</p><p class="text-3xl font-bold mt-2">$284,150</p></div>
       </div>
-      <div class="bg-surface rounded-xl p-6">
+      <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
         <h2 class="text-lg font-bold mb-4">Top Earning Drivers</h2>
         <ul class="space-y-3 text-sm">
-          <li class="flex justify-between border-b border-gray-800 pb-2"><span>Yossi Klein</span><span class="font-semibold">$3,240</span></li>
-          <li class="flex justify-between border-b border-gray-800 pb-2"><span>Mendel Berkowitz</span><span class="font-semibold">$2,890</span></li>
+          <li class="flex justify-between border-b border-gray-100 pb-2"><span>Yossi Klein</span><span class="font-semibold">$3,240</span></li>
+          <li class="flex justify-between border-b border-gray-100 pb-2"><span>Mendel Berkowitz</span><span class="font-semibold">$2,890</span></li>
           <li class="flex justify-between"><span>Avrohom Friedman</span><span class="font-semibold">$2,455</span></li>
         </ul>
       </div>
@@ -144,16 +265,16 @@
 
     <!-- Verification queue -->
     <section data-panel="verification" class="panel hidden">
-      <div class="bg-surface rounded-xl p-6">
+      <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
         <h2 class="text-lg font-bold mb-4">Pending Driver Verifications</h2>
         <div class="space-y-4">
-          <div class="border border-gray-800 rounded-lg p-4 flex items-center justify-between">
-            <div><p class="font-semibold">Shimon Katz</p><p class="text-sm text-muted">License + plate photo · submitted 28 min ago</p></div>
-            <div class="flex gap-2"><button class="bg-primary text-black text-sm px-4 py-2 rounded-lg font-semibold">Approve</button><button class="bg-danger text-white text-sm px-4 py-2 rounded-lg font-semibold">Reject</button></div>
+          <div class="border border-gray-200 rounded-lg p-4 flex items-center justify-between">
+            <div><p class="font-semibold">Shimon Katz</p><p class="text-sm text-gray-500">License + plate photo · submitted 28 min ago</p></div>
+            <div class="flex gap-2"><button class="bg-primary hover:bg-primary-dark text-white text-sm px-4 py-2 rounded-lg font-semibold">Approve</button><button class="bg-danger hover:bg-red-600 text-white text-sm px-4 py-2 rounded-lg font-semibold">Reject</button></div>
           </div>
-          <div class="border border-gray-800 rounded-lg p-4 flex items-center justify-between">
-            <div><p class="font-semibold">Yitzchok Rosen</p><p class="text-sm text-muted">License only · submitted 2h ago</p></div>
-            <div class="flex gap-2"><button class="bg-primary text-black text-sm px-4 py-2 rounded-lg font-semibold">Approve</button><button class="bg-danger text-white text-sm px-4 py-2 rounded-lg font-semibold">Reject</button></div>
+          <div class="border border-gray-200 rounded-lg p-4 flex items-center justify-between">
+            <div><p class="font-semibold">Yitzchok Rosen</p><p class="text-sm text-gray-500">License only · submitted 2h ago</p></div>
+            <div class="flex gap-2"><button class="bg-primary hover:bg-primary-dark text-white text-sm px-4 py-2 rounded-lg font-semibold">Approve</button><button class="bg-danger hover:bg-red-600 text-white text-sm px-4 py-2 rounded-lg font-semibold">Reject</button></div>
           </div>
         </div>
       </div>
@@ -161,15 +282,15 @@
 
     <!-- Promo codes -->
     <section data-panel="promos" class="panel hidden">
-      <div class="bg-surface rounded-xl overflow-hidden">
+      <div class="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm">
         <table class="w-full text-sm">
-          <thead class="bg-bg text-muted text-xs uppercase">
+          <thead class="bg-gray-50 text-gray-500 text-xs uppercase tracking-wide">
             <tr><th class="px-4 py-3 text-left">Code</th><th class="px-4 py-3 text-left">Discount</th><th class="px-4 py-3 text-left">Uses</th><th class="px-4 py-3 text-left">Expires</th><th class="px-4 py-3 text-left">Status</th></tr>
           </thead>
           <tbody>
-            <tr class="border-t border-gray-800"><td class="px-4 py-3 font-mono">WELCOME10</td><td class="px-4 py-3">10% off</td><td class="px-4 py-3">847</td><td class="px-4 py-3">2026-12-31</td><td class="px-4 py-3"><span class="text-primary">active</span></td></tr>
-            <tr class="border-t border-gray-800"><td class="px-4 py-3 font-mono">PURIM26</td><td class="px-4 py-3">$5 off</td><td class="px-4 py-3">203</td><td class="px-4 py-3">2026-03-15</td><td class="px-4 py-3"><span class="text-muted">expired</span></td></tr>
-            <tr class="border-t border-gray-800"><td class="px-4 py-3 font-mono">SHABBOS</td><td class="px-4 py-3">15% off</td><td class="px-4 py-3">1,204</td><td class="px-4 py-3">—</td><td class="px-4 py-3"><span class="text-primary">active</span></td></tr>
+            <tr class="border-t border-gray-100"><td class="px-4 py-3 font-mono">WELCOME10</td><td class="px-4 py-3">10% off</td><td class="px-4 py-3">847</td><td class="px-4 py-3">2026-12-31</td><td class="px-4 py-3"><span class="text-primary">active</span></td></tr>
+            <tr class="border-t border-gray-100"><td class="px-4 py-3 font-mono">PURIM26</td><td class="px-4 py-3">$5 off</td><td class="px-4 py-3">203</td><td class="px-4 py-3">2026-03-15</td><td class="px-4 py-3"><span class="text-gray-500">expired</span></td></tr>
+            <tr class="border-t border-gray-100"><td class="px-4 py-3 font-mono">SHABBOS</td><td class="px-4 py-3">15% off</td><td class="px-4 py-3">1,204</td><td class="px-4 py-3">—</td><td class="px-4 py-3"><span class="text-primary">active</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -188,17 +309,461 @@
         e.preventDefault();
         const name = tab.dataset.tab;
         tabs.forEach(t => {
-          t.classList.remove('bg-primary/10', 'text-primary');
-          t.classList.add('text-muted');
+          t.classList.remove('bg-primary/10', 'text-primary', 'font-medium');
+          t.classList.add('text-gray-600');
         });
-        tab.classList.add('bg-primary/10', 'text-primary');
-        tab.classList.remove('text-muted');
+        tab.classList.add('bg-primary/10', 'text-primary', 'font-medium');
+        tab.classList.remove('text-gray-600');
 
         panels.forEach(p => p.classList.add('hidden'));
         document.querySelector(`[data-panel="${name}"]`).classList.remove('hidden');
         title.textContent = tab.textContent;
+
+        if (name === 'finance') Finance.activate();
+        else Finance.deactivate();
       });
     });
+  </script>
+
+  <!-- ============================================================ -->
+  <!-- Income & Expenses panel                                       -->
+  <!-- ============================================================ -->
+  <script>
+  const Finance = (() => {
+    const REFRESH_MS = 30000;
+    const CATEGORIES = ['Payouts', 'Stripe Fees', 'Infrastructure', 'Marketing', 'Payroll', 'Other'];
+    const CAT_COLORS = {
+      'Payouts': '#EF4444', 'Stripe Fees': '#F59E0B', 'Infrastructure': '#3B82F6',
+      'Marketing': '#A855F7', 'Payroll': '#EC4899', 'Other': '#6B7280'
+    };
+    const INCOME_COLOR = '#22C55E';
+    const EXPENSE_COLOR = '#EF4444';
+
+    // ----- Config -----------------------------------------------------------
+    // Supabase project URL is public; safe to be here.
+    // ADMIN_SECRET is a stopgap until real Supabase Auth ships. TODO(auth).
+    const SUPABASE_URL = 'https://psxpwaspqcxjauqogkep.supabase.co';
+    const ADMIN_SECRET = window.HEIMISH_ADMIN_SECRET || '';  // set via window.HEIMISH_ADMIN_SECRET in a separate <script> not committed to repo
+
+    // ----- Integration stubs ------------------------------------------------
+    // Each adapter returns { income: Transaction[], expenses: Transaction[] }.
+    // Transaction = { id, ts (ISO), amount, category?, description, source, ref? }
+    // TODO: replace mock arrays with real fetches.
+
+    async function fetchSupabaseTransactions(fromTs, toTs) {
+      // TODO(supabase): SELECT from rides + driver_subscriptions + promo_revenue,
+      // and SELECT from payouts for the expenses side. See memory:
+      // project_supabase_migration_workflow.md — migrations are manual.
+      return mockSupabase(fromTs, toTs);
+    }
+
+    async function fetchStripeTransactions(fromTs, toTs) {
+      // TODO(stripe): GET /v1/balance_transactions?created[gte]=...&created[lte]=...
+      // Map type='charge' → income; type='stripe_fee' or fee field → Stripe Fees expense;
+      // type='payout' is the bank transfer (do NOT count — already reflected in fares).
+      return mockStripe(fromTs, toTs);
+    }
+
+    async function fetchPlaidTransactions(fromTs, toTs) {
+      // TODO(plaid): /transactions/get for connected business accounts.
+      // Categorize by Plaid category → our fixed list (Infrastructure / Marketing / Payroll / Other).
+      // Skip any entry that matches a Stripe payout (see dedupAgainstStripe).
+      return mockPlaid(fromTs, toTs);
+    }
+
+    // Anthropic (Claude) — REAL adapter, calls the Edge Function.
+    // Returns ONLY expenses. If the function is unreachable or unauthorized
+    // we log and return empty so the rest of the dashboard still renders.
+    async function fetchAnthropicExpenses(fromTs, toTs) {
+      if (!ADMIN_SECRET) {
+        console.info('[finance] ADMIN_SECRET not set — skipping Anthropic fetch');
+        return { income: [], expenses: [] };
+      }
+      try {
+        const url = `${SUPABASE_URL}/functions/v1/finance-anthropic?from=${encodeURIComponent(fromTs)}&to=${encodeURIComponent(toTs)}`;
+        const res = await fetch(url, { headers: { 'x-admin-secret': ADMIN_SECRET } });
+        if (!res.ok) {
+          console.warn('[finance] Anthropic fetch failed:', res.status, await res.text());
+          return { income: [], expenses: [] };
+        }
+        const json = await res.json();
+        return { income: [], expenses: Array.isArray(json.expenses) ? json.expenses : [] };
+      } catch (e) {
+        console.warn('[finance] Anthropic fetch error:', e);
+        return { income: [], expenses: [] };
+      }
+    }
+
+    // Stripe is source of truth for payments. Drop any Plaid entry that looks
+    // like a Stripe→bank transfer so we don't double-count.
+    function dedupAgainstStripe(plaidExpenses, stripeAll) {
+      const stripePayoutAmounts = new Set(
+        (stripeAll.payouts || []).map(p => Math.round(p.amount * 100))
+      );
+      return plaidExpenses.filter(tx => {
+        const cents = Math.round(tx.amount * 100);
+        const looksLikeStripeTransfer = /stripe|payout/i.test(tx.description || '');
+        return !(looksLikeStripeTransfer && stripePayoutAmounts.has(cents));
+      });
+    }
+
+    // ----- Mock generators --------------------------------------------------
+    // Deterministic-ish data so the UI looks alive without a backend.
+    let manualExpenses = loadManualExpenses();
+
+    function loadManualExpenses() {
+      try { return JSON.parse(localStorage.getItem('finance_manual_expenses') || '[]'); }
+      catch { return []; }
+    }
+    function saveManualExpenses() {
+      localStorage.setItem('finance_manual_expenses', JSON.stringify(manualExpenses));
+    }
+
+    function mockSupabase(fromTs, toTs) {
+      const income = [];
+      const expenses = [];
+      const start = new Date(fromTs).getTime();
+      const end = new Date(toTs).getTime();
+      const days = Math.max(1, Math.ceil((end - start) / 86400000));
+      // ~30 rides/day on average
+      const rideCount = Math.min(days * 30, 2000);
+      for (let i = 0; i < rideCount; i++) {
+        const ts = new Date(start + Math.random() * (end - start)).toISOString();
+        const fare = 12 + Math.random() * 60;
+        const platformCut = fare * 0.2;
+        income.push({ id: 'ride-' + i, ts, amount: +platformCut.toFixed(2), description: 'Ride platform cut', source: 'supabase', ref: 'ride' });
+        expenses.push({ id: 'payout-' + i, ts, amount: +(fare - platformCut).toFixed(2), category: 'Payouts', description: 'Driver payout', source: 'supabase', ref: 'payout' });
+      }
+      // Subscriptions (drivers)
+      for (let i = 0; i < Math.min(days, 30); i++) {
+        const ts = new Date(start + i * 86400000).toISOString();
+        income.push({ id: 'sub-' + i, ts, amount: 49, description: 'Driver subscription', source: 'supabase', ref: 'subscription' });
+      }
+      // Promo / partnership
+      if (days >= 7) {
+        income.push({ id: 'promo-1', ts: new Date(end - 86400000).toISOString(), amount: 850, description: 'Partnership: Boro Park Synagogue', source: 'supabase', ref: 'partnership' });
+      }
+      return { income, expenses };
+    }
+
+    function mockStripe(fromTs, toTs) {
+      const expenses = [];
+      const payouts = [];
+      const start = new Date(fromTs).getTime();
+      const end = new Date(toTs).getTime();
+      const days = Math.max(1, Math.ceil((end - start) / 86400000));
+      // Stripe fee ~2.9% + 30¢ per ride — assume ~30 rides/day
+      const txCount = Math.min(days * 30, 2000);
+      for (let i = 0; i < txCount; i++) {
+        const ts = new Date(start + Math.random() * (end - start)).toISOString();
+        const fee = 0.30 + (12 + Math.random() * 60) * 0.029;
+        expenses.push({ id: 'stripefee-' + i, ts, amount: +fee.toFixed(2), category: 'Stripe Fees', description: 'Stripe processing fee', source: 'stripe', ref: 'fee' });
+      }
+      // Daily payouts to bank (used by dedup, not displayed directly)
+      for (let i = 0; i < days; i++) {
+        payouts.push({ ts: new Date(start + i * 86400000).toISOString(), amount: 500 + Math.random() * 2000 });
+      }
+      return { income: [], expenses, payouts };
+    }
+
+    function mockPlaid(fromTs, toTs) {
+      const expenses = [];
+      const start = new Date(fromTs).getTime();
+      const end = new Date(toTs).getTime();
+      const days = Math.max(1, Math.ceil((end - start) / 86400000));
+      const recurring = [
+        { desc: 'Supabase Pro',    cat: 'Infrastructure', amt: 25,  every: 30 },
+        { desc: 'Vercel Hosting',  cat: 'Infrastructure', amt: 20,  every: 30 },
+        { desc: 'Twilio SMS',      cat: 'Infrastructure', amt: 84,  every: 30 },
+        { desc: 'Google Ads',      cat: 'Marketing',      amt: 450, every: 7 },
+        { desc: 'Meta Ads',        cat: 'Marketing',      amt: 380, every: 7 },
+        { desc: 'Contractor — Eng', cat: 'Payroll',       amt: 3200, every: 14 },
+      ];
+      recurring.forEach((r, ri) => {
+        for (let d = 0; d < days; d += r.every) {
+          const ts = new Date(start + d * 86400000).toISOString();
+          if (new Date(ts).getTime() > end) break;
+          expenses.push({ id: `plaid-${ri}-${d}`, ts, amount: r.amt, category: r.cat, description: r.desc, source: 'plaid', ref: 'bank' });
+        }
+      });
+      return { income: [], expenses };
+    }
+
+    // ----- Aggregation ------------------------------------------------------
+    async function loadRange(fromTs, toTs) {
+      const [supa, stripe, plaid, anthropic] = await Promise.all([
+        fetchSupabaseTransactions(fromTs, toTs),
+        fetchStripeTransactions(fromTs, toTs),
+        fetchPlaidTransactions(fromTs, toTs),
+        fetchAnthropicExpenses(fromTs, toTs),
+      ]);
+      const dedupedPlaid = dedupAgainstStripe(plaid.expenses, stripe);
+      const manualInRange = manualExpenses.filter(e => {
+        const t = new Date(e.ts).getTime();
+        return t >= new Date(fromTs).getTime() && t <= new Date(toTs).getTime();
+      });
+      const income = [...supa.income, ...stripe.income, ...plaid.income];
+      const expenses = [...supa.expenses, ...stripe.expenses, ...dedupedPlaid, ...anthropic.expenses, ...manualInRange];
+      return { income, expenses };
+    }
+
+    // ----- Range helpers ----------------------------------------------------
+    function rangeFor(key) {
+      const now = new Date();
+      const end = now.toISOString();
+      let start;
+      if (key === 'today') {
+        start = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();
+      } else if (key === 'week') {
+        start = new Date(now.getTime() - 7 * 86400000).toISOString();
+      } else if (key === 'month') {
+        start = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+      } else if (key === 'ytd') {
+        start = new Date(now.getFullYear(), 0, 1).toISOString();
+      } else if (key === 'all') {
+        start = new Date(now.getTime() - 365 * 86400000).toISOString();
+      } else { // custom
+        const from = document.getElementById('finFromDate').value;
+        const to = document.getElementById('finToDate').value;
+        if (!from || !to) return rangeFor('month');
+        start = new Date(from).toISOString();
+        return { from: start, to: new Date(to + 'T23:59:59').toISOString() };
+      }
+      return { from: start, to: end };
+    }
+
+    // ----- Rendering --------------------------------------------------------
+    let trendChart = null;
+    let breakdownChart = null;
+    let currentRange = 'today';
+    let refreshTimer = null;
+
+    function fmtMoney(n) {
+      const sign = n < 0 ? '-' : '';
+      return sign + '$' + Math.abs(n).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+    }
+    function fmtTime(ts) {
+      const d = new Date(ts);
+      const diff = (Date.now() - d.getTime()) / 1000;
+      if (diff < 60) return Math.floor(diff) + 's ago';
+      if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+      if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+      return d.toLocaleDateString();
+    }
+
+    function bucketize(transactions, fromTs, toTs) {
+      // Pick bucket granularity from range length.
+      const ms = new Date(toTs).getTime() - new Date(fromTs).getTime();
+      let unit, label;
+      if (ms <= 2 * 86400000)        { unit = 'hour';  label = 'Hourly'; }
+      else if (ms <= 60 * 86400000)  { unit = 'day';   label = 'Daily'; }
+      else if (ms <= 365 * 86400000) { unit = 'week';  label = 'Weekly'; }
+      else                            { unit = 'month'; label = 'Monthly'; }
+
+      // Zero-pad so string sort matches chronological order.
+      const pad = (n) => String(n).padStart(2, '0');
+      function keyFor(d) {
+        const y = d.getFullYear(), m = pad(d.getMonth() + 1), day = pad(d.getDate());
+        if (unit === 'hour') return y + '-' + m + '-' + day + ' ' + pad(d.getHours()) + ':00';
+        if (unit === 'day')  return y + '-' + m + '-' + day;
+        if (unit === 'week') {
+          const w = new Date(d); w.setDate(d.getDate() - d.getDay());
+          const wk = Math.ceil(((w - new Date(w.getFullYear(), 0, 1)) / 86400000 + 1) / 7);
+          return w.getFullYear() + '-W' + pad(wk);
+        }
+        return y + '-' + m;
+      }
+      const buckets = new Map();
+      transactions.forEach(({ tx, kind }) => {
+        const k = keyFor(new Date(tx.ts));
+        if (!buckets.has(k)) buckets.set(k, { income: 0, expense: 0 });
+        buckets.get(k)[kind] += tx.amount;
+      });
+      const keys = [...buckets.keys()].sort();
+      return { label, keys, buckets };
+    }
+
+    function renderKpis(income, expenses) {
+      const i = income.reduce((s, t) => s + t.amount, 0);
+      const e = expenses.reduce((s, t) => s + t.amount, 0);
+      const net = i - e;
+      const margin = i > 0 ? (net / i) * 100 : 0;
+      document.getElementById('kpiIncome').textContent = fmtMoney(i);
+      document.getElementById('kpiExpenses').textContent = fmtMoney(e);
+      const netEl = document.getElementById('kpiNet');
+      netEl.textContent = fmtMoney(net);
+      netEl.className = 'text-3xl font-bold mt-2 ' + (net >= 0 ? 'text-primary' : 'text-danger');
+      document.getElementById('kpiMargin').textContent = margin.toFixed(1) + '%';
+      document.getElementById('kpiIncomeSub').textContent = income.length + ' transactions';
+      document.getElementById('kpiExpensesSub').textContent = expenses.length + ' transactions';
+      document.getElementById('kpiNetSub').textContent = (net >= 0 ? 'Profit' : 'Loss') + ' for period';
+    }
+
+    function renderTrend(income, expenses, fromTs, toTs) {
+      const combined = [
+        ...income.map(tx => ({ tx, kind: 'income' })),
+        ...expenses.map(tx => ({ tx, kind: 'expense' })),
+      ];
+      const { label, keys, buckets } = bucketize(combined, fromTs, toTs);
+      document.getElementById('finChartScale').textContent = label;
+      const incomeSeries = keys.map(k => +buckets.get(k).income.toFixed(2));
+      const expenseSeries = keys.map(k => +buckets.get(k).expense.toFixed(2));
+
+      const ctx = document.getElementById('finTrendChart');
+      if (trendChart) trendChart.destroy();
+      trendChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: keys,
+          datasets: [
+            { label: 'Income',   data: incomeSeries,  borderColor: INCOME_COLOR,  backgroundColor: INCOME_COLOR + '22',  tension: 0.3, fill: true },
+            { label: 'Expenses', data: expenseSeries, borderColor: EXPENSE_COLOR, backgroundColor: EXPENSE_COLOR + '22', tension: 0.3, fill: true },
+          ]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          plugins: { legend: { position: 'bottom' } },
+          scales: { y: { ticks: { callback: v => '$' + v.toLocaleString() } } }
+        }
+      });
+    }
+
+    function renderBreakdown(expenses) {
+      const totals = {};
+      CATEGORIES.forEach(c => totals[c] = 0);
+      expenses.forEach(t => { totals[t.category || 'Other'] = (totals[t.category || 'Other'] || 0) + t.amount; });
+      const labels = CATEGORIES.filter(c => totals[c] > 0);
+      const data = labels.map(c => +totals[c].toFixed(2));
+      const colors = labels.map(c => CAT_COLORS[c]);
+
+      const ctx = document.getElementById('finBreakdownChart');
+      if (breakdownChart) breakdownChart.destroy();
+      breakdownChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: { labels, datasets: [{ data, backgroundColor: colors, borderWidth: 0 }] },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'bottom' },
+            tooltip: { callbacks: { label: c => c.label + ': $' + c.parsed.toLocaleString() } }
+          },
+          cutout: '60%'
+        }
+      });
+    }
+
+    function renderFeed(income, expenses) {
+      const all = [
+        ...income.map(t => ({ ...t, kind: 'income' })),
+        ...expenses.map(t => ({ ...t, kind: 'expense' })),
+      ].sort((a, b) => new Date(b.ts) - new Date(a.ts)).slice(0, 50);
+      const ul = document.getElementById('finFeed');
+      ul.innerHTML = all.map(t => {
+        const color = t.kind === 'income' ? 'text-primary' : 'text-danger';
+        const sign = t.kind === 'income' ? '+' : '−';
+        const badge = t.source === 'stripe' ? 'Stripe' : t.source === 'plaid' ? 'Bank' : t.source === 'supabase' ? 'App' : t.source === 'anthropic' ? 'Claude' : 'Manual';
+        return `<li class="flex items-center justify-between border-b border-gray-100 pb-2">
+          <div class="min-w-0">
+            <p class="truncate">${t.description}</p>
+            <p class="text-xs text-gray-500">${badge}${t.category ? ' · ' + t.category : ''} · ${fmtTime(t.ts)}</p>
+          </div>
+          <span class="${color} font-semibold ml-3 whitespace-nowrap">${sign}${fmtMoney(t.amount)}</span>
+        </li>`;
+      }).join('');
+      document.getElementById('finFeedCount').textContent = all.length + ' items';
+    }
+
+    function renderExpensesTable(expenses) {
+      const recent = [...expenses].sort((a, b) => new Date(b.ts) - new Date(a.ts)).slice(0, 100);
+      const tbody = document.getElementById('finExpensesBody');
+      tbody.innerHTML = recent.map(t => {
+        const isManual = t.source === 'manual';
+        const dateStr = new Date(t.ts).toLocaleDateString();
+        return `<tr class="border-t border-gray-100" data-id="${t.id}">
+          <td class="px-3 py-2 text-gray-600">${dateStr}</td>
+          <td class="px-3 py-2"><span class="inline-block w-2 h-2 rounded-full mr-1.5 align-middle" style="background:${CAT_COLORS[t.category] || '#6B7280'}"></span>${t.category || 'Other'}</td>
+          <td class="px-3 py-2">${t.description}</td>
+          <td class="px-3 py-2 text-xs text-gray-500">${t.source}</td>
+          <td class="px-3 py-2 text-right font-medium">${fmtMoney(t.amount)}</td>
+          <td class="px-3 py-2 text-right">${isManual ? `<button class="text-gray-400 hover:text-danger text-xs" data-delete="${t.id}">×</button>` : ''}</td>
+        </tr>`;
+      }).join('');
+      tbody.querySelectorAll('[data-delete]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-delete');
+          manualExpenses = manualExpenses.filter(e => e.id !== id);
+          saveManualExpenses();
+          refresh();
+        });
+      });
+    }
+
+    async function refresh() {
+      const { from, to } = rangeFor(currentRange);
+      const { income, expenses } = await loadRange(from, to);
+      renderKpis(income, expenses);
+      renderTrend(income, expenses, from, to);
+      renderBreakdown(expenses);
+      renderFeed(income, expenses);
+      renderExpensesTable(expenses);
+    }
+
+    function setRange(key) {
+      currentRange = key;
+      document.querySelectorAll('.fin-range').forEach(b => {
+        const active = b.dataset.range === key;
+        b.classList.toggle('bg-primary', active);
+        b.classList.toggle('text-white', active);
+        b.classList.toggle('font-medium', active);
+        b.classList.toggle('text-gray-600', !active);
+        b.classList.toggle('hover:bg-gray-100', !active);
+      });
+      document.getElementById('finCustomRange').classList.toggle('hidden', key !== 'custom');
+      if (key !== 'custom') refresh();
+    }
+
+    function bindOnce() {
+      if (bindOnce.done) return;
+      bindOnce.done = true;
+      document.querySelectorAll('.fin-range').forEach(b => {
+        b.addEventListener('click', () => setRange(b.dataset.range));
+      });
+      document.getElementById('finApplyCustom').addEventListener('click', refresh);
+      document.getElementById('finRefreshBtn').addEventListener('click', refresh);
+      document.getElementById('newExpDate').valueAsDate = new Date();
+      document.getElementById('newExpAdd').addEventListener('click', () => {
+        const dateEl = document.getElementById('newExpDate');
+        const catEl = document.getElementById('newExpCategory');
+        const descEl = document.getElementById('newExpDesc');
+        const amtEl = document.getElementById('newExpAmount');
+        const amount = parseFloat(amtEl.value);
+        if (!amount || amount <= 0) { amtEl.focus(); return; }
+        manualExpenses.push({
+          id: 'manual-' + Date.now(),
+          ts: new Date(dateEl.value || new Date()).toISOString(),
+          amount, category: catEl.value,
+          description: descEl.value || catEl.value,
+          source: 'manual'
+        });
+        saveManualExpenses();
+        descEl.value = ''; amtEl.value = '';
+        refresh();
+      });
+    }
+
+    function activate() {
+      bindOnce();
+      refresh();
+      if (refreshTimer) clearInterval(refreshTimer);
+      refreshTimer = setInterval(refresh, REFRESH_MS);
+    }
+    function deactivate() {
+      if (refreshTimer) { clearInterval(refreshTimer); refreshTimer = null; }
+    }
+
+    return { activate, deactivate };
+  })();
   </script>
 </body>
 </html>
