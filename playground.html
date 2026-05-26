@@ -1,0 +1,2175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heimish · Design Playground</title>
+<style>
+:root {
+  --primary: #22C55E;
+  --primary-dark: #16A34A;
+  --bg: #0A0A0A;
+  --surface: #1A1A1A;
+  --surface-alt: #242424;
+  --text: #FFFFFF;
+  --text-muted: #9CA3AF;
+  --border: #2D2D2D;
+  --danger: #EF4444;
+  --warning: #F59E0B;
+  --font-scale: 1;
+  --radius: 12px;
+  --depth: 14px;
+  --shadow-opacity: 0.4;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #050505;
+  color: #fff;
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ─── SIDEBAR ─────────────────────────────────────────── */
+#sidebar {
+  width: 270px;
+  min-width: 270px;
+  background: #0d0d0d;
+  border-right: 1px solid #1e1e1e;
+  overflow-y: auto;
+  padding: 18px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+#sidebar::-webkit-scrollbar { width: 4px; }
+#sidebar::-webkit-scrollbar-track { background: transparent; }
+#sidebar::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+
+.sidebar-header .logo-dot {
+  width: 10px; height: 10px;
+  background: var(--primary);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--primary);
+}
+
+.sidebar-header h1 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.section {
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-size: 10px;
+  font-weight: 600;
+  color: #444;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+.ctrl {
+  margin-bottom: 12px;
+}
+
+.ctrl-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.ctrl-name {
+  font-size: 11px;
+  color: #888;
+}
+
+.ctrl-val {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--primary);
+  font-variant-numeric: tabular-nums;
+  min-width: 36px;
+  text-align: right;
+}
+
+input[type="range"] {
+  width: 100%;
+  height: 3px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: linear-gradient(to right, var(--primary) 0%, var(--primary) var(--pct, 50%), #2a2a2a var(--pct, 50%), #2a2a2a 100%);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 13px;
+  height: 13px;
+  background: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 0 2px var(--primary), 0 2px 6px rgba(0,0,0,0.4);
+  transition: transform 0.1s;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+input[type="color"] {
+  width: 100%;
+  height: 30px;
+  border: 1px solid #2a2a2a;
+  border-radius: 6px;
+  background: none;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.toggle-name { font-size: 11px; color: #888; }
+
+.toggle {
+  position: relative;
+  width: 36px; height: 20px;
+}
+
+.toggle input { opacity: 0; width: 0; height: 0; }
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: #333;
+  border-radius: 20px;
+  transition: 0.2s;
+}
+
+.toggle-slider::before {
+  content: '';
+  position: absolute;
+  height: 14px; width: 14px;
+  left: 3px; bottom: 3px;
+  background: white;
+  border-radius: 50%;
+  transition: 0.2s;
+}
+
+.toggle input:checked + .toggle-slider { background: var(--primary); }
+.toggle input:checked + .toggle-slider::before { transform: translateX(16px); }
+
+/* ─── MAIN ────────────────────────────────────────────── */
+#main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+#main::-webkit-scrollbar { width: 6px; }
+#main::-webkit-scrollbar-track { background: transparent; }
+#main::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 3px; }
+
+.section-heading {
+  font-size: 11px;
+  font-weight: 600;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-heading::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #1a1a1a;
+}
+
+/* ─── 3D PREVIEW ──────────────────────────────────────── */
+#preview-wrap {
+  background: var(--bg);
+  border: 1px solid #1e1e1e;
+  border-radius: 14px;
+  overflow: hidden;
+  height: 220px;
+  position: relative;
+}
+
+#three-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+#preview-label {
+  position: absolute;
+  bottom: 10px;
+  right: 14px;
+  font-size: 10px;
+  color: #333;
+  letter-spacing: 0.06em;
+}
+
+/* ─── PHONE GRID ──────────────────────────────────────── */
+#screens-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
+  gap: 24px 18px;
+}
+
+.screen-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.screen-tag {
+  font-size: 10px;
+  font-weight: 500;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Phone shell */
+.phone {
+  width: 185px;
+  height: 360px;
+  background: var(--bg);
+  border-radius: 26px;
+  border: 2px solid #2a2a2a;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.7), 0 0 0 1px #111;
+  font-size: 10px;
+  line-height: 1.3;
+  flex-shrink: 0;
+  transition: border-color 0.3s;
+}
+
+.phone:hover {
+  border-color: var(--primary);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.8), 0 0 16px rgba(34,197,94,0.1);
+}
+
+.notch {
+  width: 60px;
+  height: 6px;
+  background: #1a1a1a;
+  border-radius: 0 0 6px 6px;
+  margin: 0 auto 0;
+}
+
+.screen-body {
+  padding: 8px;
+  height: calc(100% - 14px);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── SCREEN: Language ────────────────────────────────── */
+.s-language {
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+}
+
+.s-language .logo-text {
+  font-size: calc(18px * var(--font-scale));
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: 0.04em;
+  text-shadow: 0 0 calc(var(--depth)) rgba(34,197,94,var(--shadow-opacity));
+  margin-bottom: 4px;
+  text-align: center;
+}
+
+.s-language .tagline {
+  font-size: 8px;
+  color: var(--text-muted);
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.lang-btn {
+  width: 100%;
+  padding: 10px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.lang-btn.active {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.lang-btn .flag { font-size: 14px; }
+.lang-btn .lang-name {
+  font-size: calc(11px * var(--font-scale));
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* ─── SCREEN: Login ───────────────────────────────────── */
+.s-login {
+  justify-content: center;
+  gap: 8px;
+}
+
+.s-login .logo-block {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.s-login .logo-block .big-text {
+  font-size: calc(20px * var(--font-scale));
+  font-weight: 800;
+  color: var(--primary);
+  text-shadow: 0 2px calc(var(--depth)) rgba(34,197,94,var(--shadow-opacity));
+}
+
+.s-login .logo-block .sub {
+  font-size: 8px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.mock-input {
+  width: 100%;
+  height: 28px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.mock-input .icon { font-size: 9px; opacity: 0.5; }
+.mock-input .placeholder {
+  font-size: 9px;
+  color: var(--text-muted);
+}
+
+.mock-btn {
+  width: 100%;
+  height: 30px;
+  background: var(--primary);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 4px;
+}
+
+.mock-btn.secondary {
+  background: transparent;
+  border: 1px solid var(--primary);
+}
+
+.mock-btn span {
+  font-size: calc(10px * var(--font-scale));
+  font-weight: 700;
+  color: #000;
+}
+
+.mock-btn.secondary span { color: var(--primary); }
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 4px 0;
+}
+
+.divider-line { flex: 1; height: 1px; background: var(--border); }
+.divider-text { font-size: 8px; color: var(--text-muted); }
+
+/* ─── SCREEN: Register ────────────────────────────────── */
+.s-register {
+  gap: 6px;
+}
+
+.form-title {
+  font-size: calc(13px * var(--font-scale));
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+/* ─── SCREEN: Rider Home ──────────────────────────────── */
+.s-riderhome {
+  gap: 0;
+  padding: 0;
+}
+
+.map-placeholder {
+  height: 45%;
+  background: linear-gradient(135deg, #0f1e10 0%, #0a1a0a 40%, #061206 100%);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.map-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(34,197,94,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34,197,94,0.06) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.map-pin {
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.map-pin-head {
+  width: 14px; height: 14px;
+  background: var(--primary);
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  box-shadow: 0 0 10px var(--primary);
+}
+
+.bottom-panel {
+  flex: 1;
+  background: var(--surface);
+  border-radius: 14px 14px 0 0;
+  padding: 10px 8px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: -10px;
+  z-index: 2;
+  position: relative;
+}
+
+.panel-handle {
+  width: 28px; height: 3px;
+  background: #333;
+  border-radius: 2px;
+  margin: 0 auto 8px;
+}
+
+.route-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 2px;
+}
+
+.route-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.route-dot.green { background: var(--primary); box-shadow: 0 0 4px var(--primary); }
+.route-dot.red { background: var(--danger); }
+
+.route-label {
+  flex: 1;
+  font-size: 8px;
+  color: var(--text-muted);
+}
+
+.driver-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface-alt);
+  border-radius: 8px;
+  padding: 5px 7px;
+}
+
+.driver-avatar-sm {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), #1a6e3a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  color: #fff;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.driver-info { flex: 1; }
+.driver-name-sm { font-size: 9px; font-weight: 600; color: var(--text); }
+.driver-sub { font-size: 8px; color: var(--text-muted); }
+
+.price-tag {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+/* ─── SCREEN: Driver Dashboard ────────────────────────── */
+.s-driver {
+  gap: 7px;
+}
+
+.dash-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.dash-greet {
+  font-size: calc(11px * var(--font-scale));
+  font-weight: 700;
+  color: var(--text);
+}
+
+.online-pill {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(34,197,94,0.15);
+  border: 1px solid rgba(34,197,94,0.3);
+  border-radius: 20px;
+  padding: 3px 8px;
+}
+
+.online-dot { width: 5px; height: 5px; background: var(--primary); border-radius: 50%; animation: pulse 1.5s infinite; }
+.online-text { font-size: 8px; font-weight: 600; color: var(--primary); }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.stats-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 4px;
+}
+
+.stat-box {
+  background: var(--surface-alt);
+  border-radius: 8px;
+  padding: 6px 4px;
+  text-align: center;
+}
+
+.stat-val {
+  font-size: calc(11px * var(--font-scale));
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.stat-name { font-size: 7px; color: var(--text-muted); margin-top: 1px; }
+
+.ride-request-card {
+  background: var(--surface-alt);
+  border-radius: 10px;
+  padding: 8px;
+  border: 1px solid rgba(34,197,94,0.2);
+}
+
+.req-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.req-title { font-size: 9px; font-weight: 600; color: var(--text); }
+.req-fare { font-size: 11px; font-weight: 700; color: var(--primary); }
+
+.req-route {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 7px;
+}
+
+.btn-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+}
+
+.btn-sm {
+  height: 24px;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.btn-sm.accept { background: var(--primary); color: #000; }
+.btn-sm.decline { background: var(--surface); border: 1px solid #333; color: var(--text-muted); }
+
+/* ─── SCREEN: Active Ride ─────────────────────────────── */
+.s-active {
+  gap: 0;
+  padding: 0;
+}
+
+.active-map {
+  height: 55%;
+  background: linear-gradient(160deg, #071a10 0%, #050e07 100%);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.car-icon {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  filter: drop-shadow(0 0 8px var(--primary));
+  animation: carFloat 2s ease-in-out infinite;
+}
+
+@keyframes carFloat {
+  0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+  50% { transform: translate(-50%, -50%) translateY(-3px); }
+}
+
+.active-route-line {
+  position: absolute;
+  top: 30%; left: 20%;
+  width: 60%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), transparent);
+  opacity: 0.5;
+}
+
+.active-panel {
+  flex: 1;
+  background: var(--surface);
+  border-radius: 14px 14px 0 0;
+  padding: 10px 8px;
+  margin-top: -10px;
+  z-index: 2;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.status-steps {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4px;
+  margin-bottom: 4px;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.step-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #333;
+}
+
+.step-dot.done { background: var(--primary); }
+.step-dot.active { background: var(--primary); box-shadow: 0 0 6px var(--primary); animation: pulse 1s infinite; }
+
+.step-line {
+  flex: 1;
+  height: 2px;
+  background: #333;
+  margin: 0 2px;
+  margin-bottom: 11px;
+}
+
+.step-line.done { background: var(--primary); }
+
+.step-label { font-size: 7px; color: var(--text-muted); }
+
+/* ─── SCREEN: Chat ────────────────────────────────────── */
+.s-chat {
+  gap: 6px;
+}
+
+.chat-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+.chat-avatar {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), #1a6e3a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.chat-name { font-size: calc(10px * var(--font-scale)); font-weight: 600; color: var(--text); }
+.chat-status { font-size: 7px; color: var(--primary); }
+
+.chat-messages { flex: 1; display: flex; flex-direction: column; gap: 5px; justify-content: flex-end; }
+
+.bubble {
+  max-width: 75%;
+  padding: 5px 8px;
+  border-radius: 10px;
+  font-size: calc(8px * var(--font-scale));
+  line-height: 1.4;
+}
+
+.bubble.incoming {
+  background: var(--surface-alt);
+  color: var(--text);
+  border-bottom-left-radius: 3px;
+  align-self: flex-start;
+}
+
+.bubble.outgoing {
+  background: var(--primary);
+  color: #000;
+  border-bottom-right-radius: 3px;
+  align-self: flex-end;
+}
+
+.chat-input-row {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.chat-input-mock {
+  flex: 1;
+  height: 24px;
+  background: var(--surface-alt);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  padding: 0 8px;
+  font-size: 8px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+}
+
+.send-btn {
+  width: 24px; height: 24px;
+  background: var(--primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  flex-shrink: 0;
+}
+
+/* ─── SCREEN: History ─────────────────────────────────── */
+.s-history { gap: 6px; }
+
+.history-title {
+  font-size: calc(12px * var(--font-scale));
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.ride-item {
+  background: var(--surface);
+  border-radius: 9px;
+  padding: 7px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.ride-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ride-date { font-size: 8px; color: var(--text-muted); }
+.ride-fare { font-size: 10px; font-weight: 700; color: var(--primary); }
+
+.ride-route { font-size: 8px; color: var(--text); }
+
+.ride-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 7px;
+  font-weight: 600;
+  align-self: flex-start;
+}
+
+.ride-badge.completed { background: rgba(34,197,94,0.15); color: var(--primary); }
+.ride-badge.cancelled { background: rgba(239,68,68,0.15); color: var(--danger); }
+
+/* ─── SCREEN: Earnings ────────────────────────────────── */
+.s-earnings { gap: 6px; }
+
+.earnings-hero {
+  background: linear-gradient(135deg, rgba(34,197,94,0.15), rgba(34,197,94,0.05));
+  border: 1px solid rgba(34,197,94,0.2);
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+}
+
+.earnings-total {
+  font-size: calc(22px * var(--font-scale));
+  font-weight: 800;
+  color: var(--primary);
+  text-shadow: 0 0 calc(var(--depth)) rgba(34,197,94,calc(var(--shadow-opacity) * 0.6));
+}
+
+.earnings-label { font-size: 8px; color: var(--text-muted); }
+
+.chart-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 40px;
+  padding: 0 4px;
+  background: var(--surface-alt);
+  border-radius: 8px;
+}
+
+.bar {
+  flex: 1;
+  background: rgba(34,197,94,0.3);
+  border-radius: 3px 3px 0 0;
+  transition: height 0.3s;
+}
+
+.bar.highlight { background: var(--primary); }
+
+/* ─── SCREEN: Profile ─────────────────────────────────── */
+.s-profile { gap: 7px; }
+
+.profile-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 0;
+}
+
+.profile-avatar {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), #1a6e3a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  border: 2px solid var(--primary);
+  box-shadow: 0 0 12px rgba(34,197,94,0.3);
+}
+
+.profile-name { font-size: calc(12px * var(--font-scale)); font-weight: 700; color: var(--text); }
+.profile-sub { font-size: 8px; color: var(--text-muted); }
+
+.profile-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 4px;
+}
+
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.setting-name { font-size: 9px; color: var(--text); }
+.setting-arrow { font-size: 8px; color: var(--text-muted); }
+
+/* ─── SCREEN: Verification ────────────────────────────── */
+.s-verify { gap: 6px; }
+
+.verify-title {
+  font-size: calc(11px * var(--font-scale));
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.doc-item {
+  background: var(--surface);
+  border-radius: 8px;
+  padding: 6px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.doc-info { display: flex; flex-direction: column; gap: 1px; }
+.doc-name { font-size: 9px; font-weight: 600; color: var(--text); }
+.doc-status { font-size: 7px; }
+.doc-status.approved { color: var(--primary); }
+.doc-status.pending { color: var(--warning); }
+.doc-status.missing { color: var(--text-muted); }
+
+.doc-icon { font-size: 14px; }
+
+/* ─── SCREEN: Splash ──────────────────────────────────── */
+.s-splash {
+  background: var(--bg);
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.splash-icon { font-size: 36px; filter: drop-shadow(0 0 12px var(--primary)); }
+
+.splash-title {
+  font-size: calc(22px * var(--font-scale));
+  font-weight: 800;
+  color: var(--primary);
+  text-shadow: 0 0 calc(var(--depth)) rgba(34,197,94,var(--shadow-opacity));
+  letter-spacing: 0.02em;
+}
+
+.splash-sub { font-size: 8px; color: var(--text-muted); letter-spacing: 0.06em; }
+
+.splash-loader {
+  display: flex;
+  gap: 4px;
+  margin-top: 20px;
+}
+
+.loader-dot {
+  width: 5px; height: 5px;
+  background: var(--primary);
+  border-radius: 50%;
+  animation: bounce 0.8s infinite;
+  opacity: 0.4;
+}
+
+.loader-dot:nth-child(2) { animation-delay: 0.15s; }
+.loader-dot:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes bounce {
+  0%, 100% { opacity: 0.3; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-4px); }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ═══ SIDEBAR ═══════════════════════════════════════════════════════ -->
+<div id="sidebar">
+
+  <div class="sidebar-header">
+    <div class="logo-dot"></div>
+    <h1>Heimish Playground</h1>
+  </div>
+
+  <!-- COLORS -->
+  <div class="section">
+    <div class="section-title">Colors</div>
+
+    <div class="ctrl">
+      <div class="ctrl-label">
+        <span class="ctrl-name">Primary</span>
+        <span class="ctrl-val" id="val-primary">#22C55E</span>
+      </div>
+      <input type="color" id="ctrl-primary" value="#22C55E" oninput="setColor('primary', this.value)">
+    </div>
+
+    <div class="ctrl">
+      <div class="ctrl-label">
+        <span class="ctrl-name">Background</span>
+        <span class="ctrl-val" id="val-bg">#0A0A0A</span>
+      </div>
+      <input type="color" id="ctrl-bg" value="#0a0a0a" oninput="setColor('bg', this.value)">
+    </div>
+
+    <div class="ctrl">
+      <div class="ctrl-label">
+        <span class="ctrl-name">Surface</span>
+        <span class="ctrl-val" id="val-surface">#1A1A1A</span>
+      </div>
+      <input type="color" id="ctrl-surface" value="#1a1a1a" oninput="setColor('surface', this.value)">
+    </div>
+
+    <div class="ctrl">
+      <div class="ctrl-label">
+        <span class="ctrl-name">Text Muted</span>
+        <span class="ctrl-val" id="val-text-muted">#9CA3AF</span>
+      </div>
+      <input type="color" id="ctrl-text-muted" value="#9ca3af" oninput="setColor('text-muted', this.value)">
+    </div>
+  </div>
+
+  <!-- TYPOGRAPHY -->
+  <div class="section">
+    <div class="section-title">Typography</div>
+
+    <div class="ctrl">
+      <div class="ctrl-label">
+        <span class="ctrl-name">Font Scale</span>
+        <span class="ctrl-val" id="val-font-scale">1.0×</span>
+      </div>
+      <input type="range" id="ctrl-font-scale" min="0.7" max="1.6" step="0.05" value="1"
+        oninput="setVar('font-scale', this.value, v => (parseFloat(v).toFixed(2) + '×'), 'val-font-scale'); updateFontScale(this.value)">
+    </div>
+
+    <div class="ctrl">
+      <div class="ctrl-label">
+        <span class="ctrl-name">Border Radius</span>
+        <span class="ctrl-val" id="val-radius">12px</span>
+      </div>
+      <input type="range" id="ctrl-radius" min="0" max="28" step="1" value="12"
+        oninput="setVar('radius', this.value + 'px', v => v, 'val-radius')">
+    </div>
+  </div>
+
+  <!-- 3D MATERIAL -->
+  <div class="section">
+    <div class="section-title">3D Material</div>
+
+    <div class="ctrl">
+      <div class="ctrl-label">
+        <span class="ctrl-name">Depth</span>
+        <span class="ctrl-val" id="val-depth">14</span>
+      </div>
+      <input type="range" id="ctrl-depth" min="1" max="40" step="1" value="14"
+        oninput="set3D('depth', parseFloat(this.value), 'val-depth', v => v)">
+    </div>
+
+    <div class="ctrl">
+      <div class="ctrl-label">
+        <span class="ctrl-name">Bevel Size</span>
+        <span class="ctrl-val" id="val-bevel">18</span>
+      </div>
+      <input type="range" id="ctrl-bevel" min="0" max="40" step="1" value="18"
+        oninput="set3D('bevel', parseFloat(this.value), 'val-bevel', v => v)">
+    </div>
+
+    <div class="ctrl">
+      <div class="ctrl-label">
+        <span class="ctrl-name">Roughness</span>
+        <span class="ctrl-val" id="val-roughness">0.30</span>
+      </div>
+      <input type="range" id="ctrl-roughness" min="0" max="1" step="0.01" value="0.3"
+        oninput="set3D('roughness', parseFloat(this.value), 'val-roughness', v => parseFloat(v).toFixed(2))">
+    </div>
+
+    <div class="ctrl">
+      <div class="ctrl-label">
+        <span class="ctrl-name">Metalness</span>
+        <span class="ctrl-val" id="val-metalness">0.10</span>
+      </div>
+      <input type="range" id="ctrl-metalness" min="0" max="1" step="0.01" value="0.1"
+        oninput="set3D('metalness', parseFloat(this.value), 'val-metalness', v => parseFloat(v).toFixed(2))">
+    </div>
+
+    <div class="ctrl">
+      <div class="ctrl-label">
+        <span class="ctrl-name">Clearcoat (Gloss)</span>
+        <span class="ctrl-val" id="val-clearcoat">0.80</span>
+      </div>
+      <input type="range" id="ctrl-clearcoat" min="0" max="1" step="0.01" value="0.8"
+        oninput="set3D('clearcoat', parseFloat(this.value), 'val-clearcoat', v => parseFloat(v).toFixed(2))">
+    </div>
+
+    <div class="ctrl">
+      <div class="ctrl-label">
+        <span class="ctrl-name">Font Size</span>
+        <span class="ctrl-val" id="val-3d-fontsize">42</span>
+      </div>
+      <input type="range" id="ctrl-3d-fontsize" min="10" max="100" step="1" value="42"
+        oninput="set3D('fontSize', parseFloat(this.value), 'val-3d-fontsize', v => v)">
+    </div>
+
+    <div class="ctrl">
+      <div class="ctrl-label">
+        <span class="ctrl-name">Letter Spacing</span>
+        <span class="ctrl-val" id="val-spacing">0</span>
+      </div>
+      <input type="range" id="ctrl-spacing" min="-10" max="30" step="1" value="0"
+        oninput="set3D('letterSpacing', parseFloat(this.value), 'val-spacing', v => v)">
+    </div>
+
+    <div class="toggle-row">
+      <span class="toggle-name">Auto Rotate</span>
+      <label class="toggle">
+        <input type="checkbox" id="ctrl-rotate" checked onchange="set3D('rotate', this.checked, null, null)">
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+
+    <div class="ctrl">
+      <div class="ctrl-label">
+        <span class="ctrl-name">Rotation Speed</span>
+        <span class="ctrl-val" id="val-rotspeed">1.0</span>
+      </div>
+      <input type="range" id="ctrl-rotspeed" min="0.1" max="5" step="0.1" value="1"
+        oninput="set3D('rotationSpeed', parseFloat(this.value), 'val-rotspeed', v => parseFloat(v).toFixed(1))">
+    </div>
+  </div>
+
+  <!-- SHADOW / GLOW -->
+  <div class="section">
+    <div class="section-title">Shadow / Glow</div>
+
+    <div class="ctrl">
+      <div class="ctrl-label">
+        <span class="ctrl-name">Shadow Opacity</span>
+        <span class="ctrl-val" id="val-shadow-op">0.40</span>
+      </div>
+      <input type="range" id="ctrl-shadow-op" min="0" max="1" step="0.01" value="0.4"
+        oninput="setVar('shadow-opacity', this.value, v => parseFloat(v).toFixed(2), 'val-shadow-op')">
+    </div>
+
+    <div class="ctrl">
+      <div class="ctrl-label">
+        <span class="ctrl-name">Depth Glow</span>
+        <span class="ctrl-val" id="val-depth-css">14px</span>
+      </div>
+      <input type="range" id="ctrl-depth-css" min="0" max="40" step="1" value="14"
+        oninput="setVar('depth', this.value + 'px', v => v, 'val-depth-css')">
+    </div>
+  </div>
+
+  <!-- BUTTONS -->
+  <div class="section">
+    <div class="section-title">Presets</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+      <button class="preset-btn" onclick="applyPreset('dark')">Dark</button>
+      <button class="preset-btn" onclick="applyPreset('light')">Light</button>
+      <button class="preset-btn" onclick="applyPreset('neon')">Neon</button>
+      <button class="preset-btn" onclick="applyPreset('gold')">Gold</button>
+    </div>
+  </div>
+
+  <!-- SAVE TO APP -->
+  <div class="section" style="margin-top:auto;padding-top:16px;border-top:1px solid #1a1a1a">
+    <div class="section-title">Save to App</div>
+
+    <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:12px">
+      <label class="save-target">
+        <input type="checkbox" id="save-colors" checked>
+        <span class="save-target-label">
+          <span class="save-target-name">constants/colors.ts</span>
+          <span class="save-target-desc">COLORS object</span>
+        </span>
+      </label>
+      <label class="save-target">
+        <input type="checkbox" id="save-tailwind" checked>
+        <span class="save-target-label">
+          <span class="save-target-name">tailwind.config.js</span>
+          <span class="save-target-desc">Tailwind tokens</span>
+        </span>
+      </label>
+      <label class="save-target">
+        <input type="checkbox" id="save-snapshot">
+        <span class="save-target-label">
+          <span class="save-target-name">playground-snapshot.json</span>
+          <span class="save-target-desc">Full config snapshot</span>
+        </span>
+      </label>
+    </div>
+
+    <button id="pick-folder-btn" onclick="chooseAppFolder()" style="
+      width:100%;padding:8px;margin-bottom:8px;background:#1f1f1f;border:1px solid #333;border-radius:8px;
+      color:#ddd;font-size:11px;font-weight:600;cursor:pointer;letter-spacing:0.02em;
+      transition:border-color 0.15s;font-family:inherit;
+    ">
+      Choose App Folder
+    </button>
+    <button id="save-btn" onclick="saveToApp()" style="
+      width:100%;padding:10px;background:var(--primary);border:none;border-radius:8px;
+      color:#000;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:0.04em;
+      transition:opacity 0.15s;font-family:inherit;
+    ">
+      Save Selected Files
+    </button>
+    <div id="save-status" style="
+      margin-top:8px;font-size:10px;line-height:1.4;
+      color:#666;text-align:center;min-height:14px;
+    "></div>
+  </div>
+
+</div>
+
+<!-- ═══ MAIN ══════════════════════════════════════════════════════════ -->
+<div id="main">
+
+  <!-- 3D PREVIEW -->
+  <div>
+    <div class="section-heading">3D Text Preview</div>
+    <div id="preview-wrap">
+      <canvas id="three-canvas"></canvas>
+      <span id="preview-label">three.js · WebGL</span>
+    </div>
+  </div>
+
+  <!-- SCREENS -->
+  <div>
+    <div class="section-heading">All Screens</div>
+    <div id="screens-grid">
+
+      <!-- 1. Splash -->
+      <div class="screen-wrap">
+        <span class="screen-tag">Splash</span>
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen-body s-splash">
+            <div class="splash-icon">🚗</div>
+            <div class="splash-title">Heimish</div>
+            <div class="splash-sub">RIDE WITH THE COMMUNITY</div>
+            <div class="splash-loader">
+              <div class="loader-dot"></div>
+              <div class="loader-dot"></div>
+              <div class="loader-dot"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Language -->
+      <div class="screen-wrap">
+        <span class="screen-tag">Language</span>
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen-body s-language">
+            <div class="logo-text">Heimish</div>
+            <div class="tagline">Choose your language</div>
+            <div class="lang-btn active">
+              <span class="flag">🇺🇸</span>
+              <span class="lang-name">English</span>
+            </div>
+            <div class="lang-btn">
+              <span class="flag">✡️</span>
+              <span class="lang-name" style="direction:rtl">ייִדיש</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Login -->
+      <div class="screen-wrap">
+        <span class="screen-tag">Login</span>
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen-body s-login">
+            <div class="logo-block">
+              <div class="big-text">Heimish</div>
+              <div class="sub">Sign in to continue</div>
+            </div>
+            <div class="mock-input">
+              <span class="icon">✉</span>
+              <span class="placeholder">Email address</span>
+            </div>
+            <div class="mock-input">
+              <span class="icon">🔒</span>
+              <span class="placeholder">Password</span>
+            </div>
+            <div class="mock-btn"><span>Sign In</span></div>
+            <div class="divider">
+              <div class="divider-line"></div>
+              <span class="divider-text">or</span>
+              <div class="divider-line"></div>
+            </div>
+            <div class="mock-btn secondary"><span>Create Account</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Register -->
+      <div class="screen-wrap">
+        <span class="screen-tag">Register</span>
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen-body s-register">
+            <div class="form-title">Create Account</div>
+            <div class="mock-input"><span class="placeholder">Full name</span></div>
+            <div class="mock-input"><span class="placeholder">Email</span></div>
+            <div class="mock-input"><span class="placeholder">Phone number</span></div>
+            <div class="mock-input"><span class="placeholder">Password</span></div>
+            <div class="mock-input"><span class="placeholder">Confirm password</span></div>
+            <div class="mock-btn" style="margin-top:8px"><span>Register</span></div>
+            <div style="text-align:center;margin-top:6px">
+              <span style="font-size:8px;color:var(--text-muted)">Already have an account? </span>
+              <span style="font-size:8px;color:var(--primary)">Sign in</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. Rider Home -->
+      <div class="screen-wrap">
+        <span class="screen-tag">Rider Home</span>
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen-body s-riderhome" style="padding:0">
+            <div class="map-placeholder">
+              <div class="map-grid"></div>
+              <div class="map-pin">
+                <div class="map-pin-head"></div>
+              </div>
+            </div>
+            <div class="bottom-panel">
+              <div class="panel-handle"></div>
+              <div class="route-row">
+                <div class="route-dot green"></div>
+                <div class="mock-input" style="height:22px;flex:1"><span class="placeholder">Pickup location</span></div>
+              </div>
+              <div class="route-row">
+                <div class="route-dot red"></div>
+                <div class="mock-input" style="height:22px;flex:1"><span class="placeholder">Where to?</span></div>
+              </div>
+              <div class="driver-chip">
+                <div class="driver-avatar-sm">MG</div>
+                <div class="driver-info">
+                  <div class="driver-name-sm">Moishe Goldberg</div>
+                  <div class="driver-sub">★ 4.9 · 3 min away</div>
+                </div>
+                <div class="price-tag">$8.50</div>
+              </div>
+              <div class="mock-btn"><span>Request Ride</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. Driver Dashboard -->
+      <div class="screen-wrap">
+        <span class="screen-tag">Driver</span>
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen-body s-driver">
+            <div class="dash-header">
+              <div class="dash-greet">Good morning 👋</div>
+              <div class="online-pill">
+                <div class="online-dot"></div>
+                <span class="online-text">Online</span>
+              </div>
+            </div>
+            <div class="stats-row">
+              <div class="stat-box">
+                <div class="stat-val">12</div>
+                <div class="stat-name">Rides</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-val">$94</div>
+                <div class="stat-name">Today</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-val">4.9★</div>
+                <div class="stat-name">Rating</div>
+              </div>
+            </div>
+            <div class="ride-request-card">
+              <div class="req-header">
+                <span class="req-title">New Request</span>
+                <span class="req-fare">$12.40</span>
+              </div>
+              <div class="req-route">
+                <div class="route-row">
+                  <div class="route-dot green"></div>
+                  <span class="route-label">Crown Heights, Brooklyn</span>
+                </div>
+                <div class="route-row">
+                  <div class="route-dot red"></div>
+                  <span class="route-label">Borough Park, Brooklyn</span>
+                </div>
+              </div>
+              <div class="btn-row">
+                <div class="btn-sm accept">Accept</div>
+                <div class="btn-sm decline">Decline</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. Active Ride -->
+      <div class="screen-wrap">
+        <span class="screen-tag">Active Ride</span>
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen-body s-active" style="padding:0">
+            <div class="active-map">
+              <div class="map-grid"></div>
+              <div class="active-route-line"></div>
+              <div class="car-icon">🚗</div>
+            </div>
+            <div class="active-panel">
+              <div class="status-steps">
+                <div class="step">
+                  <div class="step-dot done"></div>
+                  <span class="step-label">Confirmed</span>
+                </div>
+                <div class="step-line done"></div>
+                <div class="step">
+                  <div class="step-dot active"></div>
+                  <span class="step-label">En Route</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step">
+                  <div class="step-dot"></div>
+                  <span class="step-label">Arrived</span>
+                </div>
+              </div>
+              <div class="driver-chip">
+                <div class="driver-avatar-sm">MG</div>
+                <div class="driver-info">
+                  <div class="driver-name-sm">Moishe Goldberg</div>
+                  <div class="driver-sub">Toyota Camry · ABC-1234</div>
+                </div>
+                <div style="font-size:16px">💬</div>
+              </div>
+              <div class="mock-btn secondary"><span>Cancel Ride</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8. Chat -->
+      <div class="screen-wrap">
+        <span class="screen-tag">Chat</span>
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen-body s-chat">
+            <div class="chat-header">
+              <div class="chat-avatar">MG</div>
+              <div>
+                <div class="chat-name">Moishe Goldberg</div>
+                <div class="chat-status">Online</div>
+              </div>
+            </div>
+            <div class="chat-messages">
+              <div class="bubble incoming">I'm 2 minutes away, waiting outside!</div>
+              <div class="bubble outgoing">Great, coming down now</div>
+              <div class="bubble incoming">No rush, I'll wait 🙂</div>
+              <div class="bubble outgoing">Thank you!</div>
+            </div>
+            <div class="chat-input-row">
+              <div class="chat-input-mock">Type a message…</div>
+              <div class="send-btn">➤</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9. Ride History -->
+      <div class="screen-wrap">
+        <span class="screen-tag">History</span>
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen-body s-history">
+            <div class="history-title">Ride History</div>
+            <div class="ride-item">
+              <div class="ride-item-header">
+                <span class="ride-date">Today, 9:14 AM</span>
+                <span class="ride-fare">$12.40</span>
+              </div>
+              <div class="ride-route">Crown Heights → Borough Park</div>
+              <div class="ride-badge completed">Completed</div>
+            </div>
+            <div class="ride-item">
+              <div class="ride-item-header">
+                <span class="ride-date">Yesterday</span>
+                <span class="ride-fare">$7.20</span>
+              </div>
+              <div class="ride-route">Flatbush → Boro Park</div>
+              <div class="ride-badge completed">Completed</div>
+            </div>
+            <div class="ride-item">
+              <div class="ride-item-header">
+                <span class="ride-date">May 8</span>
+                <span class="ride-fare">—</span>
+              </div>
+              <div class="ride-route">Williamsburg → Crown Heights</div>
+              <div class="ride-badge cancelled">Cancelled</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10. Earnings -->
+      <div class="screen-wrap">
+        <span class="screen-tag">Earnings</span>
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen-body s-earnings">
+            <div style="font-size:calc(11px * var(--font-scale));font-weight:700;color:var(--text);margin-bottom:4px">
+              Earnings
+            </div>
+            <div class="earnings-hero">
+              <div class="earnings-total">$94.20</div>
+              <div class="earnings-label">Today's earnings</div>
+            </div>
+            <div class="chart-bars">
+              <div class="bar" style="height:40%"></div>
+              <div class="bar" style="height:60%"></div>
+              <div class="bar" style="height:35%"></div>
+              <div class="bar highlight" style="height:100%"></div>
+              <div class="bar" style="height:70%"></div>
+              <div class="bar" style="height:55%"></div>
+              <div class="bar" style="height:80%"></div>
+            </div>
+            <div class="ride-item">
+              <div class="ride-item-header">
+                <span class="ride-date">9:14 AM · 4.2 km</span>
+                <span class="ride-fare">$12.40</span>
+              </div>
+              <div class="ride-route">Crown Heights → Borough Park</div>
+            </div>
+            <div class="ride-item">
+              <div class="ride-item-header">
+                <span class="ride-date">10:33 AM · 2.8 km</span>
+                <span class="ride-fare">$8.10</span>
+              </div>
+              <div class="ride-route">Flatbush → Williamsburg</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 11. Profile -->
+      <div class="screen-wrap">
+        <span class="screen-tag">Profile</span>
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen-body s-profile">
+            <div class="profile-hero">
+              <div class="profile-avatar">YL</div>
+              <div class="profile-name">Yosef Levine</div>
+              <div class="profile-sub">Member since 2024 · ★ 4.8</div>
+            </div>
+            <div class="profile-stats">
+              <div class="stat-box">
+                <div class="stat-val">47</div>
+                <div class="stat-name">Rides</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-val">4.8★</div>
+                <div class="stat-name">Rating</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-val">$0</div>
+                <div class="stat-name">Credits</div>
+              </div>
+            </div>
+            <div class="setting-row">
+              <span class="setting-name">Edit Profile</span>
+              <span class="setting-arrow">›</span>
+            </div>
+            <div class="setting-row">
+              <span class="setting-name">Payment Methods</span>
+              <span class="setting-arrow">›</span>
+            </div>
+            <div class="setting-row">
+              <span class="setting-name">Language · English</span>
+              <span class="setting-arrow">›</span>
+            </div>
+            <div class="setting-row">
+              <span class="setting-name">Sign Out</span>
+              <span class="setting-arrow" style="color:var(--danger)">›</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 12. Verification -->
+      <div class="screen-wrap">
+        <span class="screen-tag">Verification</span>
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen-body s-verify">
+            <div class="verify-title">Driver Verification</div>
+            <div style="font-size:8px;color:var(--text-muted);margin-bottom:8px">
+              Upload documents to start driving
+            </div>
+            <div class="doc-item">
+              <div class="doc-info">
+                <div class="doc-name">Driver's License</div>
+                <div class="doc-status approved">✓ Approved</div>
+              </div>
+              <div class="doc-icon">🪪</div>
+            </div>
+            <div class="doc-item">
+              <div class="doc-info">
+                <div class="doc-name">License Plate Photo</div>
+                <div class="doc-status pending">⏳ Pending review</div>
+              </div>
+              <div class="doc-icon">🚗</div>
+            </div>
+            <div class="doc-item">
+              <div class="doc-info">
+                <div class="doc-name">Insurance Card</div>
+                <div class="doc-status missing">Upload required</div>
+              </div>
+              <div class="doc-icon">📄</div>
+            </div>
+            <div class="mock-btn" style="margin-top:auto"><span>Upload Document</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /screens-grid -->
+  </div>
+
+</div><!-- /main -->
+
+<style>
+.preset-btn {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 6px;
+  color: #aaa;
+  font-size: 11px;
+  padding: 6px 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+.preset-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.save-target {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  cursor: pointer;
+  padding: 7px 8px;
+  border-radius: 7px;
+  border: 1px solid #1e1e1e;
+  background: #111;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.save-target:hover { border-color: #333; background: #161616; }
+
+.save-target input[type="checkbox"] {
+  width: 14px; height: 14px;
+  accent-color: var(--primary);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.save-target-label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.save-target-name {
+  font-size: 10px;
+  font-weight: 600;
+  color: #ccc;
+  font-family: 'Menlo', 'Consolas', monospace;
+}
+
+.save-target-desc {
+  font-size: 9px;
+  color: #555;
+}
+</style>
+
+<!-- ═══ THREE.JS ═══════════════════════════════════════════════════════ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/examples/js/loaders/FontLoader.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/examples/js/geometries/TextGeometry.js"></script>
+<script>
+/* ─ Three.js 3D text preview ─────────────────────────────────────── */
+(function () {
+  const canvas = document.getElementById('three-canvas');
+  const wrap = document.getElementById('preview-wrap');
+
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.physicallyCorrectLights = true;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.2;
+
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x0a0a0a);
+
+  const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000);
+  camera.position.set(0, 0, 5);
+
+  // Lights
+  const ambient = new THREE.AmbientLight(0xffffff, 0.4);
+  scene.add(ambient);
+
+  const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
+  dirLight.position.set(2, 4, 3);
+  scene.add(dirLight);
+
+  const fillLight = new THREE.DirectionalLight(0x22C55E, 0.3);
+  fillLight.position.set(-3, -1, 2);
+  scene.add(fillLight);
+
+  const rimLight = new THREE.PointLight(0x22C55E, 0.8, 20);
+  rimLight.position.set(0, 3, -2);
+  scene.add(rimLight);
+
+  // State
+  let mesh = null;
+  let animId = null;
+
+  const state = {
+    text: 'Heimish',
+    depth: 14,
+    bevel: 18,
+    roughness: 0.3,
+    metalness: 0.1,
+    clearcoat: 0.8,
+    fontSize: 42,
+    letterSpacing: 0,
+    rotate: true,
+    rotationSpeed: 1,
+    color: 0x22C55E,
+  };
+
+  function hexToInt(hex) {
+    return parseInt(hex.replace('#', ''), 16);
+  }
+
+  // Load font then build
+  const fontLoader = new THREE.FontLoader();
+  let loadedFont = null;
+
+  fontLoader.load(
+    'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/fonts/helvetiker_bold.typeface.json',
+    function (font) {
+      loadedFont = font;
+      buildText();
+      animate();
+    }
+  );
+
+  function buildText() {
+    if (!loadedFont) return;
+    if (mesh) { scene.remove(mesh); mesh.geometry.dispose(); mesh.material.dispose(); }
+
+    const normalizedDepth = state.depth * 0.005;
+    const normalizedBevel = Math.min(state.bevel, state.depth * 0.9) * 0.002;
+    const normalizedSize = state.fontSize * 0.015;
+
+    const geo = new THREE.TextGeometry(state.text, {
+      font: loadedFont,
+      size: normalizedSize,
+      height: normalizedDepth,
+      curveSegments: 12,
+      bevelEnabled: true,
+      bevelThickness: normalizedBevel,
+      bevelSize: normalizedBevel * 0.7,
+      bevelSegments: 6,
+    });
+
+    geo.computeBoundingBox();
+    const bb = geo.boundingBox;
+    const cx = (bb.max.x - bb.min.x) / 2;
+    const cy = (bb.max.y - bb.min.y) / 2;
+    geo.translate(-bb.min.x - cx, -bb.min.y - cy, 0);
+
+    const mat = new THREE.MeshPhysicalMaterial({
+      color: state.color,
+      roughness: state.roughness,
+      metalness: state.metalness,
+      clearcoat: state.clearcoat,
+      clearcoatRoughness: 0.1,
+    });
+
+    mesh = new THREE.Mesh(geo, mat);
+    scene.add(mesh);
+
+    // Fit camera
+    const size = new THREE.Box3().setFromObject(mesh).getSize(new THREE.Vector3());
+    const maxDim = Math.max(size.x, size.y, 1);
+    camera.position.z = maxDim * 1.4 + 1;
+  }
+
+  function animate() {
+    animId = requestAnimationFrame(animate);
+    if (mesh && state.rotate) {
+      mesh.rotation.y += 0.005 * state.rotationSpeed;
+      mesh.rotation.x = Math.sin(Date.now() * 0.0005) * 0.15;
+    }
+    // Resize
+    const w = wrap.clientWidth;
+    const h = wrap.clientHeight;
+    if (canvas.width !== w || canvas.height !== h) {
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+    renderer.render(scene, camera);
+  }
+
+  // Expose update hook
+  window._three = {
+    update(key, val) {
+      state[key] = val;
+      if (key === 'color') {
+        if (mesh) mesh.material.color.set(val);
+      } else if (key === 'roughness' || key === 'metalness' || key === 'clearcoat') {
+        if (mesh) mesh.material[key] = val;
+      } else if (key === 'rotate' || key === 'rotationSpeed') {
+        // handled in animate loop
+      } else {
+        buildText(); // geometry change — rebuild
+      }
+    }
+  };
+})();
+</script>
+
+<script>
+/* ─ Slider logic ─────────────────────────────────────────────────── */
+const root = document.documentElement;
+
+function setVar(varName, value, fmt, valId) {
+  root.style.setProperty('--' + varName, value);
+  if (valId) document.getElementById(valId).textContent = fmt ? fmt(value) : value;
+  updateSliderFill(event && event.target);
+}
+
+function setColor(varName, hex) {
+  root.style.setProperty('--' + varName, hex);
+  const valId = 'val-' + varName;
+  const el = document.getElementById(valId);
+  if (el) el.textContent = hex.toUpperCase();
+  if (varName === 'primary' && window._three) {
+    window._three.update('color', parseInt(hex.replace('#', ''), 16));
+    // Update rim light color too
+  }
+}
+
+function set3D(key, val, valId, fmt) {
+  if (valId) {
+    document.getElementById(valId).textContent = fmt ? fmt(val) : val;
+  }
+  if (window._three) window._three.update(key, val);
+  updateSliderFill(event && event.target);
+}
+
+function updateFontScale(v) {
+  root.style.setProperty('--font-scale', v);
+}
+
+function updateSliderFill(input) {
+  if (!input || input.type !== 'range') return;
+  const min = parseFloat(input.min) || 0;
+  const max = parseFloat(input.max) || 100;
+  const val = parseFloat(input.value);
+  const pct = ((val - min) / (max - min) * 100).toFixed(1) + '%';
+  input.style.setProperty('--pct', pct);
+}
+
+// Init all sliders' fill on load
+document.querySelectorAll('input[type="range"]').forEach(updateSliderFill);
+
+/* ─ Presets ──────────────────────────────────────────────────────── */
+const presets = {
+  dark: {
+    primary: '#22C55E', bg: '#0A0A0A', surface: '#1A1A1A',
+    roughness: 0.3, metalness: 0.1, clearcoat: 0.8,
+    depth: 14, bevel: 18, fontScale: 1,
+  },
+  light: {
+    primary: '#16A34A', bg: '#F9FAFB', surface: '#FFFFFF',
+    roughness: 0.4, metalness: 0.0, clearcoat: 0.5,
+    depth: 10, bevel: 14, fontScale: 1,
+  },
+  neon: {
+    primary: '#00FF88', bg: '#040810', surface: '#0D1520',
+    roughness: 0.05, metalness: 0.6, clearcoat: 1.0,
+    depth: 20, bevel: 22, fontScale: 1.1,
+  },
+  gold: {
+    primary: '#F59E0B', bg: '#0A0805', surface: '#1A1505',
+    roughness: 0.1, metalness: 0.9, clearcoat: 0.9,
+    depth: 16, bevel: 20, fontScale: 1,
+  },
+};
+
+function applyPreset(name) {
+  const p = presets[name];
+  if (!p) return;
+
+  // Apply colors
+  setColor('primary', p.primary);
+  setColor('bg', p.bg);
+  setColor('surface', p.surface);
+
+  // Sync color inputs
+  document.getElementById('ctrl-primary').value = p.primary;
+  document.getElementById('ctrl-bg').value = p.bg;
+  document.getElementById('ctrl-surface').value = p.surface;
+
+  // Apply 3D material
+  const setSlider = (id, val, setter) => {
+    const el = document.getElementById(id);
+    if (el) { el.value = val; updateSliderFill(el); }
+    setter(val);
+  };
+
+  setSlider('ctrl-roughness', p.roughness, v => set3D('roughness', v, 'val-roughness', x => parseFloat(x).toFixed(2)));
+  setSlider('ctrl-metalness', p.metalness, v => set3D('metalness', v, 'val-metalness', x => parseFloat(x).toFixed(2)));
+  setSlider('ctrl-clearcoat', p.clearcoat, v => set3D('clearcoat', v, 'val-clearcoat', x => parseFloat(x).toFixed(2)));
+  setSlider('ctrl-depth', p.depth, v => set3D('depth', v, 'val-depth', x => x));
+  setSlider('ctrl-bevel', p.bevel, v => set3D('bevel', v, 'val-bevel', x => x));
+  setSlider('ctrl-font-scale', p.fontScale, v => {
+    root.style.setProperty('--font-scale', v);
+    document.getElementById('val-font-scale').textContent = parseFloat(v).toFixed(2) + '×';
+  });
+
+  // Light mode adjustment
+  if (name === 'light') {
+    root.style.setProperty('--text', '#111111');
+    root.style.setProperty('--text-muted', '#6B7280');
+    root.style.setProperty('--border', '#E5E7EB');
+    root.style.setProperty('--surface-alt', '#F3F4F6');
+  } else {
+    root.style.setProperty('--text', '#FFFFFF');
+    root.style.setProperty('--text-muted', '#9CA3AF');
+    root.style.setProperty('--border', '#2D2D2D');
+    root.style.setProperty('--surface-alt', '#242424');
+  }
+}
+</script>
+
+<script>
+/* ─ Save to App ──────────────────────────────────────────────────── */
+let appDirHandle = null;
+
+async function chooseAppFolder() {
+  const status = document.getElementById('save-status');
+  if (!('showDirectoryPicker' in window)) {
+    status.style.color = '#EF4444';
+    status.textContent = 'Open in Chrome or Edge to save files locally.';
+    return null;
+  }
+
+  try {
+    appDirHandle = await window.showDirectoryPicker({ mode: 'readwrite' });
+    document.getElementById('pick-folder-btn').textContent = appDirHandle.name + '/';
+    status.style.color = 'var(--primary)';
+    status.textContent = 'App folder selected.';
+    return appDirHandle;
+  } catch (err) {
+    if (err.name !== 'AbortError') {
+      status.style.color = '#EF4444';
+      status.textContent = err.message;
+    }
+    return null;
+  }
+}
+
+async function getOrCreateDir(root, parts) {
+  let dir = root;
+  for (const part of parts) {
+    dir = await dir.getDirectoryHandle(part, { create: true });
+  }
+  return dir;
+}
+
+async function writeAppFile(root, path, content) {
+  const parts = path.split('/');
+  const fileName = parts.pop();
+  const dir = await getOrCreateDir(root, parts);
+  const fh = await dir.getFileHandle(fileName, { create: true });
+  const w = await fh.createWritable();
+  await w.write(content);
+  await w.close();
+}
+
+function currentPlaygroundConfig() {
+  const getColor = id => document.getElementById(id)?.value ?? null;
+  const getNum   = id => parseFloat(document.getElementById(id)?.value ?? 0);
+  return {
+    primary:       getColor('ctrl-primary'),
+    background:    getColor('ctrl-bg'),
+    surface:       getColor('ctrl-surface'),
+    text:          getComputedStyle(document.documentElement).getPropertyValue('--text').trim() || '#FFFFFF',
+    textMuted:     getColor('ctrl-text-muted'),
+    border:        getComputedStyle(document.documentElement).getPropertyValue('--border').trim() || '#2D2D2D',
+    surfaceAlt:    getComputedStyle(document.documentElement).getPropertyValue('--surface-alt').trim() || '#242424',
+    radius:        getNum('ctrl-radius'),
+    shadowOpacity: getNum('ctrl-shadow-op'),
+    material: {
+      depth:         getNum('ctrl-depth'),
+      bevel:         getNum('ctrl-bevel'),
+      roughness:     getNum('ctrl-roughness'),
+      metalness:     getNum('ctrl-metalness'),
+      clearcoat:     getNum('ctrl-clearcoat'),
+      fontSize:      getNum('ctrl-3d-fontsize'),
+      letterSpacing: getNum('ctrl-spacing'),
+      rotationSpeed: getNum('ctrl-rotspeed'),
+      fontScale:     getNum('ctrl-font-scale'),
+    },
+  };
+}
+
+function buildColorsFile(config) {
+  return `export const COLORS = {
+  primary: '${config.primary}',
+  primaryDark: '${config.primary}',
+  background: '${config.background}',
+  surface: '${config.surface}',
+  surfaceAlt: '${config.surfaceAlt}',
+  text: '${config.text}',
+  textMuted: '${config.textMuted}',
+  border: '${config.border}',
+  danger: '#EF4444',
+  warning: '#F59E0B',
+} as const;
+
+export default COLORS;
+`;
+}
+
+function buildTailwindConfig(config) {
+  return `/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: ['./app/**/*.{js,jsx,ts,tsx}', './components/**/*.{js,jsx,ts,tsx}'],
+  theme: {
+    extend: {
+      colors: {
+        primary: '${config.primary}',
+        background: '${config.background}',
+        surface: '${config.surface}',
+        'surface-alt': '${config.surfaceAlt}',
+        text: '${config.text}',
+        muted: '${config.textMuted}',
+        border: '${config.border}',
+      },
+      borderRadius: {
+        DEFAULT: '${config.radius}px',
+      },
+      boxShadow: {
+        heimish: '0 18px 45px rgba(0, 0, 0, ${config.shadowOpacity})',
+      },
+    },
+  },
+  plugins: [],
+};
+`;
+}
+
+async function saveToApp() {
+  const btn    = document.getElementById('save-btn');
+  const status = document.getElementById('save-status');
+
+  const targets = [
+    document.getElementById('save-colors').checked    && 'colors',
+    document.getElementById('save-tailwind').checked  && 'tailwind',
+    document.getElementById('save-snapshot').checked  && 'snapshot',
+  ].filter(Boolean);
+
+  if (targets.length === 0) {
+    status.style.color = '#F59E0B';
+    status.textContent = 'Select at least one file above.';
+    return;
+  }
+
+  const dir = appDirHandle || await chooseAppFolder();
+  if (!dir) return;
+  const config = currentPlaygroundConfig();
+
+  btn.style.opacity = '0.5';
+  btn.textContent = 'Saving…';
+  status.style.color = '#555';
+  status.textContent = '';
+
+  try {
+    if (targets.includes('colors')) {
+      await writeAppFile(dir, 'constants/colors.ts', buildColorsFile(config));
+    }
+    if (targets.includes('tailwind')) {
+      await writeAppFile(dir, 'tailwind.config.js', buildTailwindConfig(config));
+    }
+    if (targets.includes('snapshot')) {
+      await writeAppFile(dir, 'playground-snapshot.json', JSON.stringify(config, null, 2) + '\n');
+    }
+    btn.style.opacity = '1';
+    btn.textContent = 'Saved!';
+    status.style.color = 'var(--primary)';
+    status.textContent = 'Saved ' + targets.length + ' file' + (targets.length === 1 ? '' : 's') + ' to ' + dir.name + '/';
+    setTimeout(() => { btn.textContent = 'Save Selected Files'; }, 2500);
+  } catch (err) {
+    btn.style.opacity = '1';
+    btn.textContent = 'Save Selected Files';
+    status.style.color = '#EF4444';
+    status.textContent = err.message;
+  }
+}
+</script>
+</body>
+</html>
