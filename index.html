@@ -4,10 +4,28 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Heimish Discount — Ride with your community</title>
-<meta name="description" content="Heimish Discount — a ride-sharing app for the Jewish community. Download for iOS and Android." />
+<meta name="description" content="Heimish Discount — a ride-sharing app for the Heimish community. Download for iOS and Android." />
 <link rel="icon" type="image/png" href="/favicon.png" />
 <link rel="apple-touch-icon" href="/favicon.png" />
 <script src="https://cdn.tailwindcss.com"></script>
+<style>
+  @keyframes carWiggle {
+    0%   { transform: rotate(0deg) translateY(0px); }
+    15%  { transform: rotate(-4deg) translateY(-3px); }
+    30%  { transform: rotate(3deg) translateY(-5px); }
+    45%  { transform: rotate(-3deg) translateY(-3px); }
+    60%  { transform: rotate(2deg) translateY(-1px); }
+    75%  { transform: rotate(-1deg) translateY(0px); }
+    100% { transform: rotate(0deg) translateY(0px); }
+  }
+  .car-wiggle {
+    animation: carWiggle 2.4s ease-in-out infinite;
+    transform-origin: center bottom;
+  }
+  a.footer-link { color: #6B7280; text-decoration: none; }
+  a.footer-link:hover { color: #ffffff; }
+  a.nav-link:hover { color: #0ead29 !important; }
+</style>
 <script>
   tailwind.config = {
     theme: {
@@ -25,37 +43,36 @@
 </script>
 </head>
 <body class="bg-bg text-white min-h-screen flex flex-col">
-  <header class="px-6 py-5 flex items-center justify-between max-w-6xl mx-auto w-full">
-    <a href="/" class="text-2xl font-bold text-primary">Heimish Discount</a>
-    <nav class="flex gap-6 text-sm text-muted">
-      <a href="/privacy-policy" class="hover:text-white">Privacy</a>
-      <a href="/terms-and-conditions" class="hover:text-white">Terms</a>
-      <a href="/admin/login.html" class="hover:text-white">Admin</a>
+
+  <header class="sticky top-0 z-50 bg-bg px-6 py-5 flex items-center justify-between max-w-6xl mx-auto w-full">
+    <a href="/"><img src="/heimish-logo-3d.png" alt="Heimish Discount" class="h-60 w-auto" /></a>
+    <nav style="display:flex; gap:30px; align-self:flex-start; padding-top:8px;">
+      <a href="/privacy-policy" class="nav-link" style="font-size:25px; color:#6B7280; text-decoration:none;">Privacy</a>
+      <a href="/terms-and-conditions" class="nav-link" style="font-size:25px; color:#6B7280; text-decoration:none;">Terms</a>
+      <a href="/admin/login.html" class="nav-link" style="font-size:25px; color:#6B7280; text-decoration:none;">Admin</a>
     </nav>
   </header>
 
   <main class="flex-1 flex items-center">
     <div class="max-w-6xl mx-auto px-6 py-16 grid md:grid-cols-2 gap-12 items-center w-full">
       <div>
-        <h1 class="text-5xl md:text-6xl font-bold leading-tight mb-6">
-          Ride with your <span class="text-primary">community</span>.
-        </h1>
-        <p class="text-lg text-muted mb-8">
-          Heimish Discount is the ride-sharing app built for the Jewish community —
-          with full English and Yiddish support.
+        
+        <p style="font-size:25px; color:#0ead29; margin-bottom:32px; font-weight: bolder;">
+          Heimish Discount is the ride-sharing app built for the Heimish community —
+          with full Yiddish and English support.
         </p>
 
-        <div class="flex flex-col sm:flex-row gap-4 flex-wrap">
-          <a href="#" class="bg-white text-black rounded-xl px-6 py-3 font-semibold flex items-center gap-3 hover:bg-gray-200 transition">
+        <div class="flex flex-row gap-3">
+          <a href="#" class="bg-white rounded-xl px-4 py-3 font-semibold flex items-center gap-2 hover:bg-gray-200 transition">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-7 h-7 flex-shrink-0" fill="black">
               <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
             </svg>
             <span>
-              <span class="block text-xs text-gray-600">Download on the</span>
-              <span class="block text-base">App Store</span>
+              <span style="display:block; font-size:11px; color:#4B5563;">Download on the</span>
+              <span style="display:block; font-size:16px; color:#000000;">App Store</span>
             </span>
           </a>
-          <a href="#" class="bg-white text-black rounded-xl px-6 py-3 font-semibold flex items-center gap-3 hover:bg-gray-200 transition">
+          <a href="#" class="bg-white rounded-xl px-4 py-3 font-semibold flex items-center gap-2 hover:bg-gray-200 transition">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-7 h-7 flex-shrink-0">
               <path d="M3.18 23.76c.3.17.64.24.99.19l13.12-7.59-2.76-2.77-11.35 10.17z" fill="#EA4335"/>
               <path d="M21.37 10.12L18.44 8.4l-3.07 2.75 3.08 3.08 2.93-1.7c.84-.48.84-1.93-.01-2.41z" fill="#FBBC04"/>
@@ -63,27 +80,24 @@
               <path d="M2.18.44C1.6.79 1.22 1.42 1.22 2.28v19.44c0 .86.38 1.49.96 1.84l11.42-11.5L2.18.44z" fill="#34A853"/>
             </svg>
             <span>
-              <span class="block text-xs text-gray-600">Get it on</span>
-              <span class="block text-base">Google Play</span>
+              <span style="display:block; font-size:11px; color:#4B5563;">Get it on</span>
+              <span style="display:block; font-size:16px; color:#000000;">Google Play</span>
             </span>
           </a>
-          <div class="bg-surface border border-gray-700 text-white rounded-xl px-6 py-3 font-semibold flex items-center gap-3 cursor-default">
+          <div class="bg-white rounded-xl px-4 py-3 font-semibold flex items-center gap-2 cursor-default">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-7 h-7 flex-shrink-0" fill="#22C55E">
               <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
             </svg>
             <span>
-              <span class="block text-xs text-gray-400">Text <strong class="text-white">"start"</strong> to</span>
-              <span class="block text-base text-primary">845-470-4411</span>
+              <span style="display:block; font-size:11px; color:#4B5563;">Text <strong>"start"</strong> to</span>
+              <span style="display:block; font-size:16px; color:#000000;">845-470-4411</span>
             </span>
           </div>
         </div>
       </div>
 
-      <div class="bg-surface rounded-3xl p-8 flex items-center justify-center aspect-square">
-        <div class="text-center">
-          <div class="text-7xl mb-4">🚗</div>
-          <p class="text-muted">App screenshot here</p>
-        </div>
+      <div class="aspect-square overflow-hidden rounded-3xl">
+        <img src="/green-car-icon.png" alt="Heimish Discount car" class="car-wiggle w-full h-full object-cover" />
       </div>
     </div>
   </main>
@@ -91,27 +105,29 @@
   <section class="bg-surface py-16">
     <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-8">
       <div>
-        <div class="text-primary text-3xl mb-3">✓</div>
-        <h3 class="text-xl font-bold mb-2">English & Yiddish</h3>
-        <p class="text-muted">Full bilingual support with RTL layouts.</p>
+        <div style="font-size:30px; color:#22C55E; margin-bottom:12px;">✓</div>
+        <h3 style="font-size:20px; font-weight:bold; color:#ffffff; margin-bottom:8px;">English & Yiddish</h3>
+        <p style="font-size:16px; color:#6B7280;">Full bilingual support with RTL layouts.</p>
       </div>
       <div>
-        <div class="text-primary text-3xl mb-3">✓</div>
-        <h3 class="text-xl font-bold mb-2">Trusted drivers</h3>
-        <p class="text-muted">Every driver is verified before going online.</p>
+        <div style="font-size:30px; color:#22C55E; margin-bottom:12px;">✓</div>
+        <h3 style="font-size:20px; font-weight:bold; color:#ffffff; margin-bottom:8px;">Trusted drivers</h3>
+        <p style="font-size:16px; color:#6B7280;">Every driver is verified before going online.</p>
       </div>
       <div>
-        <div class="text-primary text-3xl mb-3">✓</div>
-        <h3 class="text-xl font-bold mb-2">Fair pricing</h3>
-        <p class="text-muted">Transparent fares with community discounts.</p>
+        <div style="font-size:30px; color:#22C55E; margin-bottom:12px;">✓</div>
+        <h3 style="font-size:20px; font-weight:bold; color:#ffffff; margin-bottom:8px;">Fair pricing</h3>
+        <p style="font-size:16px; color:#6B7280;">Transparent fares with community discounts.</p>
       </div>
     </div>
   </section>
 
-  <footer class="px-6 py-8 text-center text-sm text-muted">
-    © <span id="year"></span> Heimish Discount. All rights reserved.
-    · <a href="/privacy-policy" class="hover:text-white">Privacy</a>
-    · <a href="/terms-and-conditions" class="hover:text-white">Terms</a>
+  <footer class="px-6 py-8 text-center">
+    <span style="font-size:14px; color:#6B7280;">
+      © <span id="year"></span> Heimish Discount. All rights reserved.
+      · <a href="/privacy-policy" class="footer-link" style="font-size:14px;">Privacy</a>
+      · <a href="/terms-and-conditions" class="footer-link" style="font-size:14px;">Terms</a>
+    </span>
   </footer>
 
   <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
