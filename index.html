@@ -155,21 +155,6 @@
       <!-- Form -->
       <form id="sms-form" onsubmit="submitSmsForm(event)" style="padding:24px; display:flex; flex-direction:column; gap:14px;">
 
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-          <div>
-            <label style="display:block; font-size:12px; color:#9CA3AF; margin-bottom:4px;" for="sms-first">First name</label>
-            <input id="sms-first" name="firstName" type="text" placeholder="Moishe"
-              style="width:100%; background:#242424; border:1px solid #2D2D2D; border-radius:8px; padding:10px 12px; color:#fff; font-size:14px; outline:none; box-sizing:border-box;"
-              onfocus="this.style.borderColor='#22C55E'" onblur="this.style.borderColor='#2D2D2D'">
-          </div>
-          <div>
-            <label style="display:block; font-size:12px; color:#9CA3AF; margin-bottom:4px;" for="sms-last">Last name</label>
-            <input id="sms-last" name="lastName" type="text" placeholder="Goldberg"
-              style="width:100%; background:#242424; border:1px solid #2D2D2D; border-radius:8px; padding:10px 12px; color:#fff; font-size:14px; outline:none; box-sizing:border-box;"
-              onfocus="this.style.borderColor='#22C55E'" onblur="this.style.borderColor='#2D2D2D'">
-          </div>
-        </div>
-
         <div>
           <label style="display:block; font-size:12px; color:#9CA3AF; margin-bottom:4px;" for="sms-phone">
             Phone number <span style="color:#22C55E;">*</span>
@@ -288,8 +273,6 @@
     }
 
     const payload = {
-      firstName: document.getElementById('sms-first').value.trim(),
-      lastName:  document.getElementById('sms-last').value.trim(),
       phone:     phoneInput.value.trim(),
       email:     document.getElementById('sms-email').value.trim(),
       smsConsent: document.getElementById('sms-consent').checked,
