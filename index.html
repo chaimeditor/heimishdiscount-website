@@ -89,8 +89,8 @@
               <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
             </svg>
             <span>
-              <span style="display:block; font-size:11px; color:#4B5563;">Get SMS updates</span>
-              <span style="display:block; font-size:16px; color:#000000;">Subscribe by text</span>
+              <span style="display:block; font-size:11px; color:#4B5563;">No app needed —</span>
+              <span style="display:block; font-size:16px; color:#000000;">Ride by text</span>
             </span>
           </button>
         </div>
@@ -146,8 +146,8 @@
             <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
           </svg>
           <div>
-            <div style="font-size:18px; font-weight:800; color:#fff;" id="sms-modal-title">Stay in the loop</div>
-            <div style="font-size:13px; color:rgba(255,255,255,0.85);">Get launch updates from Heimish Discount</div>
+            <div style="font-size:18px; font-weight:800; color:#fff;" id="sms-modal-title">Ride by text</div>
+            <div style="font-size:13px; color:rgba(255,255,255,0.85);">Register your number to request rides via SMS</div>
           </div>
         </div>
       </div>
@@ -192,8 +192,8 @@
           <input type="checkbox" id="sms-consent" name="smsConsent"
             style="width:18px; height:18px; margin-top:1px; accent-color:#22C55E; flex-shrink:0; cursor:pointer;">
           <span style="font-size:12px; color:#9CA3AF; line-height:1.5;">
-            By checking, you are allowing to receive <strong style="color:#d1d5db;">transactional/informational SMS</strong>
-            communications regarding account notifications, customer care, etc, from
+            By checking, you are allowing to receive <strong style="color:#d1d5db;">transactional SMS</strong>
+            communications regarding ride requests, driver matching, ride confirmations, and customer care from
             <strong style="color:#d1d5db;">Heimish Discount</strong>.
             Messages frequency may vary. Message and data rates may apply,
             <strong style="color:#d1d5db;">reply HELP for help or STOP to opt-out.</strong>
@@ -220,7 +220,7 @@
         </button>
 
         <p style="font-size:11px; color:#6B7280; text-align:center; margin:0;">
-          You can also text <strong style="color:#9CA3AF;">START</strong> to <strong style="color:#9CA3AF;">845-470-4411</strong> directly.
+          Or just text your location directly to <strong style="color:#9CA3AF;">845-470-4411</strong> to get started.
         </p>
 
       </form>
@@ -228,9 +228,9 @@
       <!-- Success state (hidden initially) -->
       <div id="sms-success" style="display:none; padding:32px 24px; text-align:center;">
         <div style="font-size:48px; margin-bottom:12px;">✅</div>
-        <div style="font-size:20px; font-weight:700; color:#22C55E; margin-bottom:8px;">You're on the list!</div>
+        <div style="font-size:20px; font-weight:700; color:#22C55E; margin-bottom:8px;">You're all set!</div>
         <div style="font-size:14px; color:#9CA3AF; margin-bottom:20px;">
-          We'll text you as soon as Heimish Discount launches. Reply <strong style="color:#d1d5db;">STOP</strong> at any time to opt out.
+          Text your location to <strong style="color:#d1d5db;">845-470-4411</strong> and we'll send you available drivers near you. Reply <strong style="color:#d1d5db;">STOP</strong> at any time to opt out.
         </div>
         <button onclick="closeSmsModal()"
           style="padding:10px 28px; background:#22C55E; border:none; border-radius:8px; color:#000; font-size:14px; font-weight:700; cursor:pointer;">
