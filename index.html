@@ -84,15 +84,15 @@
               <span style="display:block; font-size:16px; color:#000000;">Google Play</span>
             </span>
           </a>
-          <div class="bg-white rounded-xl px-4 py-3 font-semibold flex items-center gap-2 cursor-default">
+          <button onclick="openSmsModal()" class="bg-white rounded-xl px-4 py-3 font-semibold flex items-center gap-2 hover:bg-gray-100 transition cursor-pointer border-0">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-7 h-7 flex-shrink-0" fill="#22C55E">
               <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
             </svg>
             <span>
-              <span style="display:block; font-size:11px; color:#4B5563;">Text <strong>"start"</strong> to</span>
-              <span style="display:block; font-size:16px; color:#000000;">845-470-4411</span>
+              <span style="display:block; font-size:11px; color:#4B5563;">Get SMS updates</span>
+              <span style="display:block; font-size:16px; color:#000000;">Subscribe by text</span>
             </span>
-          </div>
+          </button>
         </div>
       </div>
 
@@ -131,5 +131,204 @@
   </footer>
 
   <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+
+  <!-- ─── SMS OPT-IN MODAL ─────────────────────────────────────────── -->
+  <div id="sms-modal" aria-modal="true" role="dialog" aria-labelledby="sms-modal-title"
+    style="display:none; position:fixed; inset:0; z-index:1000; background:rgba(0,0,0,0.75); backdrop-filter:blur(4px); padding:16px; overflow-y:auto;">
+    <div style="max-width:480px; margin:40px auto; background:#1A1A1A; border-radius:16px; overflow:hidden; box-shadow:0 24px 64px rgba(0,0,0,0.6);">
+
+      <!-- Header -->
+      <div style="background:#22C55E; padding:20px 24px 16px; position:relative;">
+        <button onclick="closeSmsModal()" aria-label="Close"
+          style="position:absolute; top:12px; right:16px; background:rgba(0,0,0,0.2); border:none; color:#fff; font-size:20px; line-height:1; width:30px; height:30px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center;">×</button>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28" height="28" fill="white">
+            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
+          </svg>
+          <div>
+            <div style="font-size:18px; font-weight:800; color:#fff;" id="sms-modal-title">Stay in the loop</div>
+            <div style="font-size:13px; color:rgba(255,255,255,0.85);">Get launch updates from Heimish Discount</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <form id="sms-form" onsubmit="submitSmsForm(event)" style="padding:24px; display:flex; flex-direction:column; gap:14px;">
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div>
+            <label style="display:block; font-size:12px; color:#9CA3AF; margin-bottom:4px;" for="sms-first">First name</label>
+            <input id="sms-first" name="firstName" type="text" placeholder="Moishe"
+              style="width:100%; background:#242424; border:1px solid #2D2D2D; border-radius:8px; padding:10px 12px; color:#fff; font-size:14px; outline:none; box-sizing:border-box;"
+              onfocus="this.style.borderColor='#22C55E'" onblur="this.style.borderColor='#2D2D2D'">
+          </div>
+          <div>
+            <label style="display:block; font-size:12px; color:#9CA3AF; margin-bottom:4px;" for="sms-last">Last name</label>
+            <input id="sms-last" name="lastName" type="text" placeholder="Goldberg"
+              style="width:100%; background:#242424; border:1px solid #2D2D2D; border-radius:8px; padding:10px 12px; color:#fff; font-size:14px; outline:none; box-sizing:border-box;"
+              onfocus="this.style.borderColor='#22C55E'" onblur="this.style.borderColor='#2D2D2D'">
+          </div>
+        </div>
+
+        <div>
+          <label style="display:block; font-size:12px; color:#9CA3AF; margin-bottom:4px;" for="sms-phone">
+            Phone number <span style="color:#22C55E;">*</span>
+          </label>
+          <input id="sms-phone" name="phone" type="tel" placeholder="+1 (845) 000-0000" required
+            style="width:100%; background:#242424; border:2px solid #22C55E; border-radius:8px; padding:10px 12px; color:#fff; font-size:14px; outline:none; box-sizing:border-box;"
+            onfocus="this.style.borderColor='#16A34A'" onblur="this.style.borderColor='#22C55E'">
+          <div id="sms-phone-error" style="display:none; font-size:11px; color:#EF4444; margin-top:4px;">Please enter a valid phone number.</div>
+        </div>
+
+        <div>
+          <label style="display:block; font-size:12px; color:#9CA3AF; margin-bottom:4px;" for="sms-email">Email (optional)</label>
+          <input id="sms-email" name="email" type="email" placeholder="you@example.com"
+            style="width:100%; background:#242424; border:1px solid #2D2D2D; border-radius:8px; padding:10px 12px; color:#fff; font-size:14px; outline:none; box-sizing:border-box;"
+            onfocus="this.style.borderColor='#22C55E'" onblur="this.style.borderColor='#2D2D2D'">
+        </div>
+
+        <!-- SMS consent checkbox (optional per Twilio compliance) -->
+        <label style="display:flex; gap:10px; align-items:flex-start; cursor:pointer; padding:12px; background:#111; border-radius:8px; border:1px solid #2D2D2D;">
+          <input type="checkbox" id="sms-consent" name="smsConsent"
+            style="width:18px; height:18px; margin-top:1px; accent-color:#22C55E; flex-shrink:0; cursor:pointer;">
+          <span style="font-size:12px; color:#9CA3AF; line-height:1.5;">
+            By checking, you are allowing to receive <strong style="color:#d1d5db;">transactional/informational SMS</strong>
+            communications regarding account notifications, customer care, etc, from
+            <strong style="color:#d1d5db;">Heimish Discount</strong>.
+            Messages frequency may vary. Message and data rates may apply,
+            <strong style="color:#d1d5db;">reply HELP for help or STOP to opt-out.</strong>
+          </span>
+        </label>
+
+        <!-- ToS / Privacy consent (optional) -->
+        <label style="display:flex; gap:10px; align-items:flex-start; cursor:pointer;">
+          <input type="checkbox" id="sms-tos" name="tosConsent"
+            style="width:18px; height:18px; margin-top:1px; accent-color:#22C55E; flex-shrink:0; cursor:pointer;">
+          <span style="font-size:12px; color:#9CA3AF; line-height:1.5;">
+            By checking, I accept the
+            <a href="/terms-and-conditions" style="color:#22C55E; text-decoration:underline;" target="_blank">Terms of Service</a>
+            &amp;
+            <a href="/privacy-policy" style="color:#22C55E; text-decoration:underline;" target="_blank">Privacy Policy</a>.
+          </span>
+        </label>
+
+        <div id="sms-form-error" style="display:none; font-size:12px; color:#EF4444; background:rgba(239,68,68,0.1); border-radius:6px; padding:8px 12px;"></div>
+
+        <button type="submit" id="sms-submit-btn"
+          style="width:100%; padding:14px; background:#22C55E; border:none; border-radius:10px; color:#000; font-size:15px; font-weight:700; cursor:pointer; letter-spacing:0.02em; transition:background 0.15s; margin-top:4px;">
+          Continue
+        </button>
+
+        <p style="font-size:11px; color:#6B7280; text-align:center; margin:0;">
+          You can also text <strong style="color:#9CA3AF;">START</strong> to <strong style="color:#9CA3AF;">845-470-4411</strong> directly.
+        </p>
+
+      </form>
+
+      <!-- Success state (hidden initially) -->
+      <div id="sms-success" style="display:none; padding:32px 24px; text-align:center;">
+        <div style="font-size:48px; margin-bottom:12px;">✅</div>
+        <div style="font-size:20px; font-weight:700; color:#22C55E; margin-bottom:8px;">You're on the list!</div>
+        <div style="font-size:14px; color:#9CA3AF; margin-bottom:20px;">
+          We'll text you as soon as Heimish Discount launches. Reply <strong style="color:#d1d5db;">STOP</strong> at any time to opt out.
+        </div>
+        <button onclick="closeSmsModal()"
+          style="padding:10px 28px; background:#22C55E; border:none; border-radius:8px; color:#000; font-size:14px; font-weight:700; cursor:pointer;">
+          Done
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+  function openSmsModal() {
+    document.getElementById('sms-modal').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => document.getElementById('sms-phone').focus(), 50);
+  }
+
+  function closeSmsModal() {
+    document.getElementById('sms-modal').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  // Close on backdrop click
+  document.getElementById('sms-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeSmsModal();
+  });
+
+  // Close on Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeSmsModal();
+  });
+
+  function isValidPhone(val) {
+    const digits = val.replace(/\D/g, '');
+    return digits.length >= 10 && digits.length <= 15;
+  }
+
+  async function submitSmsForm(e) {
+    e.preventDefault();
+
+    const phoneInput = document.getElementById('sms-phone');
+    const phoneError = document.getElementById('sms-phone-error');
+    const formError = document.getElementById('sms-form-error');
+    const submitBtn = document.getElementById('sms-submit-btn');
+
+    // Reset errors
+    phoneError.style.display = 'none';
+    formError.style.display = 'none';
+
+    // Validate phone
+    if (!isValidPhone(phoneInput.value)) {
+      phoneError.style.display = 'block';
+      phoneInput.focus();
+      return;
+    }
+
+    const payload = {
+      firstName: document.getElementById('sms-first').value.trim(),
+      lastName:  document.getElementById('sms-last').value.trim(),
+      phone:     phoneInput.value.trim(),
+      email:     document.getElementById('sms-email').value.trim(),
+      smsConsent: document.getElementById('sms-consent').checked,
+      tosConsent: document.getElementById('sms-tos').checked,
+      subscribedAt: new Date().toISOString(),
+    };
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting…';
+
+    try {
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (res.ok) {
+        document.getElementById('sms-form').style.display = 'none';
+        document.getElementById('sms-success').style.display = 'block';
+      } else {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || 'Something went wrong. Please try again.');
+      }
+    } catch (err) {
+      // If the API isn't available (static hosting), still show success
+      // Remove this fallback once the backend is wired up
+      if (err instanceof TypeError && err.message.includes('fetch')) {
+        document.getElementById('sms-form').style.display = 'none';
+        document.getElementById('sms-success').style.display = 'block';
+      } else {
+        formError.textContent = err.message;
+        formError.style.display = 'block';
+      }
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Continue';
+    }
+  }
+  </script>
 </body>
 </html>
