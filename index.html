@@ -146,7 +146,7 @@
             <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
           </svg>
           <div>
-            <div style="font-size:18px; font-weight:800; color:#fff;" id="sms-modal-title">Ride by text</div>
+            <div style="font-size:18px; font-weight:800; color:#fff;" id="sms-modal-title">Ride Heimish Discount via text</div>
             <div style="font-size:13px; color:rgba(255,255,255,0.85);">Register your number to request rides via SMS</div>
           </div>
         </div>
@@ -155,21 +155,37 @@
       <!-- Form -->
       <form id="sms-form" onsubmit="submitSmsForm(event)" style="padding:24px; display:flex; flex-direction:column; gap:14px;">
 
-        <div>
-          <label style="display:block; font-size:12px; color:#9CA3AF; margin-bottom:4px;" for="sms-phone">
-            Phone number <span style="color:#22C55E;">*</span>
-          </label>
-          <input id="sms-phone" name="phone" type="tel" placeholder="+1 (845) 000-0000" required
-            style="width:100%; background:#242424; border:2px solid #22C55E; border-radius:8px; padding:10px 12px; color:#fff; font-size:14px; outline:none; box-sizing:border-box;"
-            onfocus="this.style.borderColor='#16A34A'" onblur="this.style.borderColor='#22C55E'">
-          <div id="sms-phone-error" style="display:none; font-size:11px; color:#EF4444; margin-top:4px;">Please enter a valid phone number.</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div>
+            <label style="display:block; font-size:12px; color:#9CA3AF; margin-bottom:4px;" for="sms-first">First name</label>
+            <input id="sms-first" name="firstName" type="text" placeholder="Moishe"
+              style="width:100%; background:#242424; border:1px solid #2D2D2D; border-radius:8px; padding:10px 12px; color:#fff; font-size:14px; outline:none; box-sizing:border-box;"
+              onfocus="this.style.borderColor='#22C55E'" onblur="this.style.borderColor='#2D2D2D'">
+          </div>
+          <div>
+            <label style="display:block; font-size:12px; color:#9CA3AF; margin-bottom:4px;" for="sms-last">Last name</label>
+            <input id="sms-last" name="lastName" type="text" placeholder="Goldberg"
+              style="width:100%; background:#242424; border:1px solid #2D2D2D; border-radius:8px; padding:10px 12px; color:#fff; font-size:14px; outline:none; box-sizing:border-box;"
+              onfocus="this.style.borderColor='#22C55E'" onblur="this.style.borderColor='#2D2D2D'">
+          </div>
         </div>
 
-        <div>
-          <label style="display:block; font-size:12px; color:#9CA3AF; margin-bottom:4px;" for="sms-email">Email (optional)</label>
-          <input id="sms-email" name="email" type="email" placeholder="you@example.com"
-            style="width:100%; background:#242424; border:1px solid #2D2D2D; border-radius:8px; padding:10px 12px; color:#fff; font-size:14px; outline:none; box-sizing:border-box;"
-            onfocus="this.style.borderColor='#22C55E'" onblur="this.style.borderColor='#2D2D2D'">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div>
+            <label style="display:block; font-size:12px; color:#9CA3AF; margin-bottom:4px;" for="sms-phone">
+              Phone number <span style="color:#22C55E;">*</span>
+            </label>
+            <input id="sms-phone" name="phone" type="tel" placeholder="+1 (845) 000-0000" required
+              style="width:100%; background:#242424; border:2px solid #22C55E; border-radius:8px; padding:10px 12px; color:#fff; font-size:14px; outline:none; box-sizing:border-box;"
+              onfocus="this.style.borderColor='#16A34A'" onblur="this.style.borderColor='#22C55E'">
+            <div id="sms-phone-error" style="display:none; font-size:11px; color:#EF4444; margin-top:4px;">Please enter a valid phone number.</div>
+          </div>
+          <div>
+            <label style="display:block; font-size:12px; color:#9CA3AF; margin-bottom:4px;" for="sms-email">Email (optional)</label>
+            <input id="sms-email" name="email" type="email" placeholder="you@example.com"
+              style="width:100%; background:#242424; border:1px solid #2D2D2D; border-radius:8px; padding:10px 12px; color:#fff; font-size:14px; outline:none; box-sizing:border-box;"
+              onfocus="this.style.borderColor='#22C55E'" onblur="this.style.borderColor='#2D2D2D'">
+          </div>
         </div>
 
         <!-- SMS consent checkbox (optional per Twilio compliance) -->
@@ -273,6 +289,8 @@
     }
 
     const payload = {
+      firstName: document.getElementById('sms-first').value.trim(),
+      lastName:  document.getElementById('sms-last').value.trim(),
       phone:     phoneInput.value.trim(),
       email:     document.getElementById('sms-email').value.trim(),
       smsConsent: document.getElementById('sms-consent').checked,
