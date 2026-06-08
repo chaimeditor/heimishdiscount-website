@@ -8,6 +8,7 @@
 <link rel="icon" type="image/png" href="/favicon.png" />
 <link rel="apple-touch-icon" href="/favicon.png" />
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
   @keyframes carWiggle {
     0%   { transform: rotate(0deg) translateY(0px); }
@@ -226,11 +227,64 @@
 
       </form>
 
-      <!-- Success state (hidden initially) -->
+      <!-- Step 2: Role choice (hidden initially) -->
+      <div id="sms-role" style="display:none; padding:24px;">
+        <p style="font-size:15px; font-weight:700; color:#fff; margin:0 0 4px;">How will you use Heimish Discount?</p>
+        <p style="font-size:13px; color:#9CA3AF; margin:0 0 18px;">You can do both later — pick how you're starting.</p>
+
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <button type="button" onclick="chooseRole('rider')"
+            style="text-align:left; background:#242424; border:1px solid #2D2D2D; border-radius:10px; padding:16px; color:#fff; cursor:pointer; transition:border-color 0.15s;"
+            onmouseover="this.style.borderColor='#22C55E'" onmouseout="this.style.borderColor='#2D2D2D'">
+            <div style="font-size:15px; font-weight:700;">🚗 I want to ride</div>
+            <div style="font-size:12px; color:#9CA3AF; margin-top:3px;">Request rides by text. You're set up instantly.</div>
+          </button>
+          <button type="button" onclick="chooseRole('driver')"
+            style="text-align:left; background:#242424; border:1px solid #2D2D2D; border-radius:10px; padding:16px; color:#fff; cursor:pointer; transition:border-color 0.15s;"
+            onmouseover="this.style.borderColor='#22C55E'" onmouseout="this.style.borderColor='#2D2D2D'">
+            <div style="font-size:15px; font-weight:700;">🪪 I want to drive</div>
+            <div style="font-size:12px; color:#9CA3AF; margin-top:3px;">Earn by driving. Requires document verification.</div>
+          </button>
+        </div>
+
+        <div id="sms-role-error" style="display:none; font-size:12px; color:#EF4444; background:rgba(239,68,68,0.1); border-radius:6px; padding:8px 12px; margin-top:14px;"></div>
+      </div>
+
+      <!-- Step 3: Driver document upload (hidden initially) -->
+      <div id="sms-driver-docs" style="display:none; padding:24px;">
+        <p style="font-size:15px; font-weight:700; color:#fff; margin:0 0 4px;">Driver verification</p>
+        <p style="font-size:13px; color:#9CA3AF; margin:0 0 18px;">Upload the same documents required in the app. Our team reviews within 1–2 business days.</p>
+
+        <div style="display:flex; flex-direction:column; gap:14px;">
+          <div>
+            <label style="display:block; font-size:12px; color:#9CA3AF; margin-bottom:6px;" for="sms-doc-license">Driver's License <span style="color:#22C55E;">*</span></label>
+            <input id="sms-doc-license" type="file" accept="image/*" capture="environment"
+              style="width:100%; background:#242424; border:1px solid #2D2D2D; border-radius:8px; padding:10px 12px; color:#9CA3AF; font-size:13px; box-sizing:border-box;">
+          </div>
+          <div>
+            <label style="display:block; font-size:12px; color:#9CA3AF; margin-bottom:6px;" for="sms-doc-plate">License Plate Photo <span style="color:#22C55E;">*</span></label>
+            <input id="sms-doc-plate" type="file" accept="image/*" capture="environment"
+              style="width:100%; background:#242424; border:1px solid #2D2D2D; border-radius:8px; padding:10px 12px; color:#9CA3AF; font-size:13px; box-sizing:border-box;">
+          </div>
+        </div>
+
+        <div id="sms-docs-error" style="display:none; font-size:12px; color:#EF4444; background:rgba(239,68,68,0.1); border-radius:6px; padding:8px 12px; margin-top:14px;"></div>
+
+        <button type="button" id="sms-docs-submit" onclick="submitDriverDocs()"
+          style="width:100%; padding:14px; background:#22C55E; border:none; border-radius:10px; color:#000; font-size:15px; font-weight:700; cursor:pointer; margin-top:18px;">
+          Submit for review
+        </button>
+        <button type="button" onclick="showStep('role')"
+          style="width:100%; padding:10px; background:none; border:none; color:#6B7280; font-size:13px; cursor:pointer; margin-top:6px;">
+          ← Back
+        </button>
+      </div>
+
+      <!-- Final: Success state (hidden initially, text set per role) -->
       <div id="sms-success" style="display:none; padding:32px 24px; text-align:center;">
         <div style="font-size:48px; margin-bottom:12px;">✅</div>
-        <div style="font-size:20px; font-weight:700; color:#22C55E; margin-bottom:8px;">You're all set!</div>
-        <div style="font-size:14px; color:#9CA3AF; margin-bottom:20px;">
+        <div id="sms-success-title" style="font-size:20px; font-weight:700; color:#22C55E; margin-bottom:8px;">You're all set!</div>
+        <div id="sms-success-body" style="font-size:14px; color:#9CA3AF; margin-bottom:20px;">
           Text your location to <strong style="color:#d1d5db;">845-470-4411</strong> and we'll send you available drivers near you. Reply <strong style="color:#d1d5db;">STOP</strong> at any time to opt out.
         </div>
         <button onclick="closeSmsModal()"
@@ -246,6 +300,7 @@
   function openSmsModal() {
     document.getElementById('sms-modal').style.display = 'block';
     document.body.style.overflow = 'hidden';
+    showStep('form');
     setTimeout(() => document.getElementById('sms-phone').focus(), 50);
   }
 
@@ -308,19 +363,41 @@
     this.value = formatPhoneDisplay(this.value);
   });
 
-  async function submitSmsForm(e) {
+  // ── Supabase (public anon key — safe to ship in client code) ──────
+  const SUPABASE_URL = 'https://psxpwaspqcxjauqogkep.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBzeHB3YXNwcWN4amF1cW9na2VwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2MTM2ODcsImV4cCI6MjA5NDE4OTY4N30.5wHh0JglQRPkpBweajz9N9JWvIzdavAQRFfCI-yH0qY';
+  let _sb = null;
+  function getSupabase() {
+    if (_sb) return _sb;
+    if (window.supabase && window.supabase.createClient) {
+      _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    }
+    return _sb;
+  }
+
+  // Collected on the first step, used through role choice + driver docs.
+  let signupData = null;
+
+  // Show exactly one step of the modal flow.
+  function showStep(step) {
+    const form = document.getElementById('sms-form');
+    form.style.display = step === 'form' ? 'flex' : 'none';
+    document.getElementById('sms-role').style.display = step === 'role' ? 'block' : 'none';
+    document.getElementById('sms-driver-docs').style.display = step === 'docs' ? 'block' : 'none';
+    document.getElementById('sms-success').style.display = step === 'success' ? 'block' : 'none';
+  }
+
+  // Step 1 → collect base info, then ask rider vs. driver.
+  function submitSmsForm(e) {
     e.preventDefault();
 
     const phoneInput = document.getElementById('sms-phone');
     const phoneError = document.getElementById('sms-phone-error');
     const formError = document.getElementById('sms-form-error');
-    const submitBtn = document.getElementById('sms-submit-btn');
 
-    // Reset errors
     phoneError.style.display = 'none';
     formError.style.display = 'none';
 
-    // Validate + normalize phone
     const normalizedPhone = normalizePhone(phoneInput.value);
     if (!normalizedPhone) {
       phoneError.style.display = 'block';
@@ -328,47 +405,100 @@
       return;
     }
 
-    const payload = {
-      firstName: document.getElementById('sms-first').value.trim(),
-      lastName:  document.getElementById('sms-last').value.trim(),
-      phone:     normalizedPhone,
-      email:     document.getElementById('sms-email').value.trim(),
-      smsConsent: document.getElementById('sms-consent').checked,
-      tosConsent: document.getElementById('sms-tos').checked,
-      subscribedAt: new Date().toISOString(),
+    signupData = {
+      first_name:  document.getElementById('sms-first').value.trim(),
+      last_name:   document.getElementById('sms-last').value.trim(),
+      phone:       normalizedPhone,
+      email:       document.getElementById('sms-email').value.trim() || null,
+      sms_consent: document.getElementById('sms-consent').checked,
+      tos_consent: document.getElementById('sms-tos').checked,
+      source:      'website',
     };
 
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Submitting…';
+    showStep('role');
+  }
 
-    try {
-      const res = await fetch('/api/subscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-
-      if (res.ok) {
-        document.getElementById('sms-form').style.display = 'none';
-        document.getElementById('sms-success').style.display = 'block';
-      } else {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.error || 'Something went wrong. Please try again.');
-      }
-    } catch (err) {
-      // If the API isn't available (static hosting), still show success
-      // Remove this fallback once the backend is wired up
-      if (err instanceof TypeError && err.message.includes('fetch')) {
-        document.getElementById('sms-form').style.display = 'none';
-        document.getElementById('sms-success').style.display = 'block';
-      } else {
-        formError.textContent = err.message;
-        formError.style.display = 'block';
-      }
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Continue';
+  // Step 2 → rider finishes now; driver goes to document upload.
+  async function chooseRole(role) {
+    if (role === 'driver') {
+      document.getElementById('sms-docs-error').style.display = 'none';
+      showStep('docs');
+      return;
     }
+    await saveSignup('rider', {});
+  }
+
+  // Step 3 (driver) → upload license + plate photo, then save.
+  async function submitDriverDocs() {
+    const license = document.getElementById('sms-doc-license').files[0];
+    const plate   = document.getElementById('sms-doc-plate').files[0];
+    const errEl   = document.getElementById('sms-docs-error');
+    const btn     = document.getElementById('sms-docs-submit');
+    errEl.style.display = 'none';
+
+    if (!license || !plate) {
+      errEl.textContent = 'Please attach both your license and plate photo.';
+      errEl.style.display = 'block';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Uploading…';
+    try {
+      const client = getSupabase();
+      let license_url = null, plate_photo_url = null;
+      if (client) {
+        const folder = 'web/' + (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()));
+        const upload = async (file, name) => {
+          const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
+          const path = `${folder}/${name}.${ext}`;
+          const { error } = await client.storage
+            .from('signup-docs')
+            .upload(path, file, { contentType: file.type || 'image/jpeg', upsert: true });
+          if (error) { console.warn('[signup] doc upload failed:', error.message); return null; }
+          return path;
+        };
+        license_url = await upload(license, 'license');
+        plate_photo_url = await upload(plate, 'plate');
+      }
+      await saveSignup('driver', { license_url, plate_photo_url });
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Submit for review';
+    }
+  }
+
+  // Insert the signup row and show the role-appropriate success screen.
+  // Gracefully no-ops if the table/bucket aren't created yet (run the
+  // 20260608000000_website_sms_signups.sql migration to persist rows).
+  async function saveSignup(role, extra) {
+    const row = {
+      ...signupData,
+      role,
+      status: role === 'driver' ? 'docs_pending' : 'new',
+      ...extra,
+    };
+    const client = getSupabase();
+    if (client) {
+      const { error } = await client.from('sms_signups').insert(row);
+      if (error) console.warn('[signup] insert failed (run migration?):', error.message);
+    } else {
+      console.warn('[signup] Supabase client not loaded — row not saved');
+    }
+    showSuccess(role);
+  }
+
+  function showSuccess(role) {
+    const title = document.getElementById('sms-success-title');
+    const body  = document.getElementById('sms-success-body');
+    if (role === 'driver') {
+      title.textContent = 'Documents received!';
+      body.innerHTML = "Our team reviews driver submissions within <strong style=\"color:#d1d5db;\">1–2 business days</strong>. We'll text you at <strong style=\"color:#d1d5db;\">" + formatPhoneDisplay(signupData.phone) + "</strong> once you're approved.";
+    } else {
+      title.textContent = "You're all set!";
+      body.innerHTML = "Text your location to <strong style=\"color:#d1d5db;\">845-470-4411</strong> and we'll send you available drivers near you. Reply <strong style=\"color:#d1d5db;\">STOP</strong> at any time to opt out.";
+    }
+    showStep('success');
   }
   </script>
 </body>
