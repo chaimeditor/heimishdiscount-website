@@ -175,7 +175,7 @@
             <label style="display:block; font-size:12px; color:#9CA3AF; margin-bottom:4px;" for="sms-phone">
               Phone number <span style="color:#22C55E;">*</span>
             </label>
-            <input id="sms-phone" name="phone" type="tel" placeholder="+1 (845) 000-0000" required
+            <input id="sms-phone" name="phone" type="tel" placeholder="(845) 000-0000" required
               style="width:100%; background:#242424; border:2px solid #22C55E; border-radius:8px; padding:10px 12px; color:#fff; font-size:14px; outline:none; box-sizing:border-box;"
               onfocus="this.style.borderColor='#16A34A'" onblur="this.style.borderColor='#22C55E'">
             <div id="sms-phone-error" style="display:none; font-size:11px; color:#EF4444; margin-top:4px;">Please enter a valid phone number.</div>
@@ -264,10 +264,49 @@
     if (e.key === 'Escape') closeSmsModal();
   });
 
-  function isValidPhone(val) {
-    const digits = val.replace(/\D/g, '');
-    return digits.length >= 10 && digits.length <= 15;
+  // Normalize anything the user types into an E.164 number.
+  // Accepts bare 10 digits, an optional leading "1", and any spaces,
+  // dashes, parentheses or "+". Returns null if it can't be normalized.
+  //   8454704411        -> +18454704411
+  //   845-470-4411      -> +18454704411
+  //   (845) 470-4411    -> +18454704411
+  //   1 845 470 4411    -> +18454704411
+  //   +1 (845) 470-4411 -> +18454704411
+  //   +972 50 123 4567  -> +972501234567  (explicit international passthrough)
+  function normalizePhone(val) {
+    const raw = (val || '').trim();
+    let digits = raw.replace(/\D/g, '');
+    if (!digits) return null;
+
+    // Explicit international number — user typed a leading "+"
+    if (raw.startsWith('+')) {
+      return (digits.length >= 10 && digits.length <= 15) ? '+' + digits : null;
+    }
+    // US number: drop an optional leading country-code "1"
+    if (digits.length === 11 && digits[0] === '1') digits = digits.slice(1);
+    // Must land on a clean 10-digit US number
+    return digits.length === 10 ? '+1' + digits : null;
   }
+
+  function isValidPhone(val) {
+    return normalizePhone(val) !== null;
+  }
+
+  // Friendly display for US numbers, e.g. "(845) 470-4411".
+  // Leaves international / unrecognized input untouched.
+  function formatPhoneDisplay(val) {
+    const norm = normalizePhone(val);
+    if (norm && norm.startsWith('+1') && norm.length === 12) {
+      const d = norm.slice(2);
+      return '(' + d.slice(0, 3) + ') ' + d.slice(3, 6) + '-' + d.slice(6);
+    }
+    return val;
+  }
+
+  // Reformat the field when the user leaves it (only if it normalizes cleanly).
+  document.getElementById('sms-phone').addEventListener('blur', function () {
+    this.value = formatPhoneDisplay(this.value);
+  });
 
   async function submitSmsForm(e) {
     e.preventDefault();
@@ -281,8 +320,9 @@
     phoneError.style.display = 'none';
     formError.style.display = 'none';
 
-    // Validate phone
-    if (!isValidPhone(phoneInput.value)) {
+    // Validate + normalize phone
+    const normalizedPhone = normalizePhone(phoneInput.value);
+    if (!normalizedPhone) {
       phoneError.style.display = 'block';
       phoneInput.focus();
       return;
@@ -291,7 +331,7 @@
     const payload = {
       firstName: document.getElementById('sms-first').value.trim(),
       lastName:  document.getElementById('sms-last').value.trim(),
-      phone:     phoneInput.value.trim(),
+      phone:     normalizedPhone,
       email:     document.getElementById('sms-email').value.trim(),
       smsConsent: document.getElementById('sms-consent').checked,
       tosConsent: document.getElementById('sms-tos').checked,
