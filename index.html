@@ -194,7 +194,7 @@
           <input type="checkbox" id="sms-consent" name="smsConsent"
             style="width:18px; height:18px; margin-top:1px; accent-color:#22C55E; flex-shrink:0; cursor:pointer;">
           <span style="font-size:12px; color:#9CA3AF; line-height:1.5;">
-            By checking this box, you agree to receive SMS messages from
+            Optional SMS consent: By checking this box, you agree to receive SMS messages from
             <strong style="color:#d1d5db;">Heimish Discount</strong> for ride requests, ride updates, and customer support.
             Message frequency varies. Message and data rates may apply. Text
             <strong style="color:#d1d5db;">HELP</strong> for help or
@@ -409,8 +409,8 @@
       return;
     }
 
-    if (!document.getElementById('sms-consent').checked || !document.getElementById('sms-tos').checked) {
-      formError.textContent = 'Please agree to SMS messages, Terms, and Privacy Policy to continue.';
+    if (!document.getElementById('sms-tos').checked) {
+      formError.textContent = 'Please accept the Terms and Privacy Policy to continue. SMS consent is optional.';
       formError.style.display = 'block';
       return;
     }
@@ -506,7 +506,11 @@
       body.innerHTML = "Our team reviews driver submissions within <strong style=\"color:#d1d5db;\">1–2 business days</strong>. We'll text you at <strong style=\"color:#d1d5db;\">" + formatPhoneDisplay(signupData.phone) + "</strong> once you're approved.";
     } else {
       title.textContent = "You're all set!";
-      body.innerHTML = "Text your location to <strong style=\"color:#d1d5db;\">845-470-4411</strong> and we'll send you available drivers near you. Reply <strong style=\"color:#d1d5db;\">STOP</strong> at any time to opt out.";
+      if (signupData.sms_consent) {
+        body.innerHTML = "Text your location to <strong style=\"color:#d1d5db;\">845-470-4411</strong> and we'll send you available drivers near you. Reply <strong style=\"color:#d1d5db;\">STOP</strong> at any time to opt out.";
+      } else {
+        body.innerHTML = "Your request was received. You did not opt in to SMS messages, so we will not send ride texts unless you later text <strong style=\"color:#d1d5db;\">START</strong> to <strong style=\"color:#d1d5db;\">845-470-4411</strong> or check the optional SMS consent box.";
+      }
     }
     showStep('success');
   }
