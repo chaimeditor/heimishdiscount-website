@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Heimish Discount — you're invited</title>
+<meta name="description" content="You've been invited to Heimish Discount." />
+<!-- Private beta: shared by link only, never listed in search results. -->
+<meta name="robots" content="noindex, nofollow" />
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link rel="apple-touch-icon" href="/favicon.png" />
+<style>
+  :root {
+    --bg: #0A0A0A;
+    --surface: #1A1A1A;
+    --surface-2: #232323;
+    --primary: #22C55E;
+    --primary-dark: #16A34A;
+    --text: #FFFFFF;
+    --muted: #9CA3AF;
+    --border: #2A2A2A;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+  }
+  a { color: var(--primary); }
+  .wrap { max-width: 560px; margin: 0 auto; padding: 20px 16px 48px; }
+  header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  header img { height: 56px; width: auto; display: block; }
+  .badge {
+    font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+    color: var(--primary); border: 1px solid var(--primary); border-radius: 999px; padding: 4px 10px;
+  }
+  h1 { font-size: 28px; line-height: 1.2; margin: 28px 0 8px; }
+  .lead { color: var(--muted); margin: 0 0 24px; font-size: 16px; }
+  .codebox {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    background: var(--surface); border: 1px solid var(--primary); border-radius: 12px;
+    padding: 14px; margin: 0 0 22px;
+  }
+  .codebox .label { color: var(--muted); font-size: 14px; }
+  .codebox .code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 22px; font-weight: 700; color: var(--primary); letter-spacing: .04em;
+  }
+  .btn {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    width: 100%; min-height: 56px; padding: 14px 20px;
+    background: var(--primary); color: #04210F; text-decoration: none;
+    font-size: 18px; font-weight: 700; border-radius: 14px;
+    border: 0; cursor: pointer; font-family: inherit;
+  }
+  .btn:hover, .btn:focus-visible { background: var(--primary-dark); color: #FFFFFF; }
+  .btn:focus-visible { outline: 3px solid #FFFFFF; outline-offset: 3px; }
+  .btn svg { width: 22px; height: 22px; flex-shrink: 0; }
+  .btn.secondary {
+    background: transparent; color: var(--primary); border: 1px solid var(--primary); margin-top: 12px;
+    font-size: 16px; min-height: 50px;
+  }
+  .btn.secondary:hover, .btn.secondary:focus-visible { background: var(--surface-2); color: var(--primary); }
+  .meta { color: var(--muted); font-size: 13px; text-align: center; margin: 10px 0 0; }
+  .copied-note { color: var(--primary); font-size: 13px; text-align: center; margin: 8px 0 0; min-height: 18px; }
+  section { margin-top: 32px; }
+  h2 { font-size: 18px; margin: 0 0 12px; }
+  ol.steps { list-style: none; margin: 0; padding: 0; counter-reset: step; }
+  ol.steps li {
+    counter-increment: step; position: relative;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    padding: 14px 14px 14px 56px; margin-bottom: 10px; font-size: 15px;
+  }
+  ol.steps li::before {
+    content: counter(step); position: absolute; left: 14px; top: 14px;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--primary); color: #04210F; font-weight: 700; font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; font-size: 15px; }
+  .card p { margin: 0 0 8px; }
+  .card p:last-child { margin-bottom: 0; }
+  .textcode {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    background: var(--surface-2); border-radius: 8px; padding: 2px 8px; white-space: nowrap;
+  }
+  .muted { color: var(--muted); }
+  footer { margin-top: 40px; color: var(--muted); font-size: 13px; text-align: center; }
+  footer a { color: var(--muted); }
+  [hidden] { display: none !important; }
+  @media (prefers-reduced-motion: no-preference) {
+    .btn { transition: background-color .15s ease, color .15s ease; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <a href="/"><img src="/heimish-logo-3d.png" alt="Heimish Discount" /></a>
+      <span class="badge">Invite</span>
+    </header>
+
+    <!-- Valid-code view -->
+    <div id="valid" hidden>
+      <h1>You're invited</h1>
+      <p class="lead">Install the Heimish Discount app and your invite code is applied when you sign up.</p>
+
+      <div class="codebox">
+        <span class="label">Your code:</span>
+        <span class="code" id="code-display"></span>
+      </div>
+
+      <button class="btn" id="download-btn" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 3a1 1 0 0 1 1 1v9.59l3.3-3.3a1 1 0 1 1 1.4 1.42l-5 5a1 1 0 0 1-1.4 0l-5-5a1 1 0 1 1 1.4-1.42L11 13.59V4a1 1 0 0 1 1-1zM5 19a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H6a1 1 0 0 1-1-1z"/></svg>
+        Download for Android
+      </button>
+      <p class="copied-note" id="copied-note" aria-live="polite"></p>
+
+      <button class="btn secondary" id="open-app-btn" type="button">Already installed? Open in the app</button>
+      <p class="meta">Android · the code is copied for you when you download.</p>
+
+      <section aria-labelledby="install-title">
+        <h2 id="install-title">How to install</h2>
+        <ol class="steps">
+          <li>Tap <strong>Download for Android</strong>. If Chrome asks whether to keep the file, tap <strong>Download anyway</strong>.</li>
+          <li>When the download finishes, tap <strong>Open</strong> to install.</li>
+          <li>If your phone asks, allow Chrome to install apps: tap <strong>Settings</strong>, turn on <strong>Allow from this source</strong>, then go back.</li>
+          <li>If Google Play Protect shows a warning, tap <strong>More details</strong>, then <strong>Install anyway</strong>. You see this because the app isn't in the Play Store yet.</li>
+          <li>Open <strong>Heimish Discount</strong> and sign up — your invite code is already filled in. If it isn't, paste it (it's on your clipboard) or type it in the <strong>Invite code</strong> box.</li>
+        </ol>
+      </section>
+
+      <section aria-labelledby="other-title">
+        <h2 id="other-title">iPhone or a flip phone?</h2>
+        <div class="card">
+          <p>Ride by text instead. Send <span class="textcode" id="sms-text"></span> to <a id="sms-link" href="#">(845) 470-4411</a>.</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- Invalid / missing code view -->
+    <div id="invalid" hidden>
+      <h1>Welcome to Heimish Discount</h1>
+      <p class="lead">This invite link looks incomplete, but you can still get the app.</p>
+      <a class="btn" href="/download/">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 3a1 1 0 0 1 1 1v9.59l3.3-3.3a1 1 0 1 1 1.4 1.42l-5 5a1 1 0 0 1-1.4 0l-5-5a1 1 0 1 1 1.4-1.42L11 13.59V4a1 1 0 0 1 1-1zM5 19a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H6a1 1 0 0 1-1-1z"/></svg>
+        Get the app
+      </a>
+      <section aria-labelledby="ask-title">
+        <h2 id="ask-title">Have an invite code?</h2>
+        <div class="card">
+          <p>Ask the friend who invited you to re-send their link, or enter their code in the app when you sign up (the <strong>Invite code</strong> box on the signup screen).</p>
+          <p class="muted">No Android phone? Text <span class="textcode">JOIN</span> and their code to <a href="sms:+18454704411">(845) 470-4411</a>.</p>
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      © <span id="year"></span> Heimish Discount ·
+      <a href="/privacy-policy">Privacy</a> ·
+      <a href="/terms-and-conditions">Terms</a>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      var APK_URL = '/download/heimish-discount.apk';
+      var FALLBACK_URL = 'https://heimishdiscount.com/download/';
+
+      // Strict referral-code shape: HEIM- + 4–8 chars from the unambiguous alphabet (no 0/O/1/I).
+      var CODE_RE = /^HEIM-[ABCDEFGHJKLMNPQRSTUVWXYZ23456789]{4,8}$/;
+
+      function getCode() {
+        var raw = '';
+        try {
+          raw = new URLSearchParams(window.location.search).get('code') || '';
+        } catch (e) { raw = ''; }
+        var code = raw.trim().toUpperCase();
+        return CODE_RE.test(code) ? code : null;
+      }
+
+      var code = getCode();
+
+      if (!code) {
+        document.getElementById('invalid').hidden = false;
+        return;
+      }
+
+      document.getElementById('valid').hidden = false;
+
+      // User-controlled input: ONLY ever assigned via textContent, never innerHTML.
+      document.getElementById('code-display').textContent = code;
+      document.getElementById('sms-text').textContent = 'JOIN ' + code;
+      document.getElementById('sms-link').setAttribute(
+        'href',
+        'sms:+18454704411?body=' + encodeURIComponent('JOIN ' + code)
+      );
+
+      var copiedNote = document.getElementById('copied-note');
+
+      function startDownload() {
+        var a = document.createElement('a');
+        a.href = APK_URL;
+        a.setAttribute('download', 'heimish-discount.apk');
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+
+      // Older browsers: copy through a hidden textarea. Must run inside the tap, like writeText.
+      function legacyCopy(text) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        return ok;
+      }
+
+      function showCopied(ok) {
+        copiedNote.textContent = ok
+          ? 'Code copied — it will fill in when you open the app.'
+          : 'Remember your code: ' + code + ' — enter it when you sign up.';
+      }
+
+      // Copy the code to the clipboard INSIDE the tap (required for clipboard permission),
+      // then start the APK download. The deferred-link pickup in the app reads this on first open.
+      // The note only says "copied" once the copy has actually succeeded.
+      document.getElementById('download-btn').addEventListener('click', function () {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(code).then(
+            function () { showCopied(true); },
+            function () { showCopied(legacyCopy(code)); }
+          );
+        } else {
+          showCopied(legacyCopy(code));
+        }
+        startDownload();
+      });
+
+      // Open directly in the installed app via an Android intent. If the app isn't installed,
+      // the browser follows browser_fallback_url to the download page.
+      document.getElementById('open-app-btn').addEventListener('click', function () {
+        var intent =
+          'intent://join?code=' + encodeURIComponent(code) +
+          '#Intent;scheme=heimish;package=com.heimishdiscount.rides;' +
+          'S.browser_fallback_url=' + encodeURIComponent(FALLBACK_URL) + ';end';
+        window.location.href = intent;
+      });
+    })();
+  </script>
+</body>
+</html>
